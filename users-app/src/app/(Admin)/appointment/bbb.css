@@ -1,0 +1,85 @@
+.app-page-container {
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                    background-color: #f4f7f6;
+                    font-family: 'Sarabun', 'Segoe UI', sans-serif;
+                    margin: 0;
+                }
+                .app-header {
+                    background-color: #3e9d8a;
+                    color: white;
+                    padding: 15px 25px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    z-index: 10;
+                }
+                .app-body {
+                    display: flex;
+                    flex: 1;
+                    flex-direction: row;
+                }
+                .app-sidebar {
+                    width: 250px;
+                    background-color: #3e9d8a;
+                    flex-shrink: 0; /* 🚨 บังคับห้าม Sidebar หดตัวเด็ดขาด */
+                }
+                .app-sidebar a {
+                    display: block;
+                    padding: 15px 20px;
+                    color: white;
+                    text-decoration: none;
+                    border-bottom: 1px solid rgba(255,255,255,0.1);
+                    transition: background 0.2s;
+                }
+                .app-sidebar a:hover {
+                    background-color: #348877;
+                }
+                .app-sidebar a.active {
+                    background-color: white;
+                    color: #3e9d8a;
+                    font-weight: bold;
+                }
+                .app-content {
+                    flex: 1; 
+                    padding: 30px;
+                    overflow-x: auto;
+                    width: 100%;
+                }
+                .app-card {
+                    background: white;
+                    padding: 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                    width: 100%; /* 🚨 บังคับให้การ์ดกางเต็มพื้นที่ */
+                }
+                .app-btn {
+                    padding: 10px 18px;
+                    border-radius: 8px;
+                    color: white !important;
+                    font-weight: bold;
+                    font-size: 14px;
+                    border: none;
+                    cursor: pointer;
+                    display: inline-block;
+                    white-space: nowrap; /* 🚨 ป้องกันตัวหนังสือในปุ่มตกบรรทัด */
+                }
+                .app-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    min-width: 700px;
+                }
+                .app-table th {
+                    background-color: #3e9d8a;
+                    color: white;
+                    padding: 15px;
+                    text-align: left;
+                    font-size: 16px;
+                }
+                .app-table td {
+                    padding: 15px;
+                    border-bottom: 1px solid #eee;
+                    font-size: 15px;
+                }

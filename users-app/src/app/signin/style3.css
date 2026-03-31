@@ -1,0 +1,108 @@
+/* พื้นหลัง */
+.login-body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(rgba(0,150,136,0.7), rgba(0,150,136,0.7)),
+                url('https://images.unsplash.com/photo-1588776814546-ec7e7a2c42c9');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+/* กล่อง login */
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* หัวข้อ */
+.login-box h2 {
+    margin-bottom: 20px;
+}
+
+/* input */
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* ปุ่ม */
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background: #009688;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #00796b;
+}
+
+/* error */
+.error {
+    color: red;
+    font-size: 14px;
+}
+/* พื้นหลัง */
+.login-body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(rgba(0,150,136,0.7), rgba(0,150,136,0.7)),
+                url('https://images.unsplash.com/photo-1588776814546-ec7e7a2c42c9');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+/* กล่องกลาง */
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* หัวข้อ */
+.login-box h2 {
+    margin-bottom: 10px;
+    color: #009688;
+}
+
+/* ข้อความ */
+.login-box p {
+    color: #555;
+}
+
+/* loading animation */
+.loader {
+    margin: 20px auto;
+    border: 5px solid #eee;
+    border-top: 5px solid #009688;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* animation หมุน */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

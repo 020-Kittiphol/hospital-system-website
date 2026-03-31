@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+<link rel="stylesheet" href="register.css">
+
+<style>
+.step-page { display: none; }
+.step-page.active { display: block; }
+</style>
+
+</head>
+<body class="register-body">
+
+<div class="form-container">
+    <h1>ระบบลงทะเบียน</h1>
+
+    <div class="card">
+        <form onsubmit="submitForm(event)">
+
+        <!-- ✅ STEP 1 -->
+        <div id="step1" class="step-page active">
+            <h2>1. ข้อมูล</h2>
+
+            <div class="row">
+                <input type="text" placeholder="ชื่อ">
+                <input type="text" placeholder="นามสกุล">
+            </div>
+
+            <div class="row">
+                <input type="number" placeholder="อายุ">
+                <input type="text" value="ไทย">
+            </div>
+
+            <div class="row">
+                <input type="text" placeholder="เลขบัตรประชาชน">
+            </div>
+
+            <div class="row">
+                <select>
+                    <option value="">เพศ</option>
+                    <option>ชาย</option>
+                    <option>หญิง</option>
+                    <option>อื่นๆ</option>
+                </select>
+
+                <input type="number" placeholder="น้ำหนัก (กก.)">
+                <input type="number" placeholder="ส่วนสูง (ซม.)">
+            </div>
+
+            <!-- ❗ ปุ่มแยกออกมา -->
+            <button type="button" onclick="nextStep(2)">ถัดไป</button>
+        </div>
+
+        <!-- ✅ STEP 2 -->
+        <div id="step2" class="step-page">
+            <h2>2. ที่อยู่</h2>
+
+            <div class="row">
+                <input type="text" placeholder="บ้านเลขที่">
+                <input type="text" placeholder="หมู่บ้าน / อาคาร">
+            </div>
+
+            <div class="row">
+                <input type="text" placeholder="หมู่">
+                <input type="text" placeholder="ซอย">
+                <input type="text" placeholder="ถนน">
+            </div>
+
+            <div class="row">
+                <select>
+                    <option>จังหวัด</option>
+                </select>
+                <select>
+                    <option>อำเภอ/เขต</option>
+                </select>
+                <select>
+                    <option>ตำบล/แขวง</option>
+                </select>
+            </div>
+
+            <input type="text" placeholder="รหัสไปรษณีย์">
+
+            <button type="button" onclick="nextStep(3)">ถัดไป</button>
+            <button type="button" onclick="nextStep(1)">ย้อนกลับ</button>
+        </div>
+
+        <!-- ✅ STEP 3 -->
+        <div id="step3" class="step-page">
+            <h2>3. อาการ</h2>
+
+            <div class="row">
+                <textarea placeholder="อาการ"></textarea>
+            </div>
+
+            <button type="submit">เสร็จสิ้น</button>
+            <button type="button" onclick="nextStep(2)">ย้อนกลับ</button>
+        </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+function nextStep(step) {
+    document.querySelectorAll('.step-page').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    document.getElementById('step' + step).classList.add('active');
+}
+</script>
+<script>
+function submitForm(event) {
+    event.preventDefault(); // ❗ กันรีเฟรช
+
+    // แสดงแจ้งเตือน
+    alert("บันทึกข้อมูลเรียบร้อยแล้ว ✅");
+
+    // เปลี่ยนหน้า (ใส่ชื่อไฟล์หน้าที่จะไป)
+    window.location.href = "success.html";
+}
+</script>
+</body>
+</html>

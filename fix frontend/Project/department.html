@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ระบบนัดแพทย์</title>
+<link rel="stylesheet" href="bbb-2.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <a href="sing-out.html" class="login-btn">Sing out</a>
+    </div>
+    <header class="main-header">
+        <h1>ระบบนัดเเพทย์โรงพยาบาล</h1>
+    </header>
+
+</header>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        
+        
+            <nav>
+                <a href="register.html" class="nav-item active">ข้อมูลผู้ใช้</a>
+                <a href="appointment.html" class="nav-item active">ข้อมูลการนัดหมาย</a>
+                <a href="department.html" class="nav-item active">ข้อมูลแผนก</a>
+                <a href="doctor.html" class="nav-item active">ข้อมูลเเพทย์</a>
+               
+            </nav>
+       
+
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+        <div class="card">
+
+            <!-- 🔥 หัว + ปุ่มเพิ่ม -->
+            <div class="card-header">
+                <h2>ข้อมูลแผนก</h2>
+                <button class="btn-add" onclick="openModal()">+ เพิ่ม</button>
+            </div>
+
+            <!-- TABLE -->
+             <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>วันนัด</th>
+                        <th>ชื่อแผนก</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h3>เพิ่ม / แก้ไข</h3>
+        <input type="datetime-local" id="date">
+        <input type="text" id="name" placeholder="ชื่อแผนก">
+        <br><br>
+        <button onclick="saveData()">บันทึก</button>
+        <button onclick="closeModal()">ยกเลิก</button>
+    </div>
+</div>
+
+<script src="bbb.js"></script>
+</body>
+</html>

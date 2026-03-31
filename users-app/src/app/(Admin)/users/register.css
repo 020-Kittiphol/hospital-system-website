@@ -1,0 +1,78 @@
+.my-reg-bg {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d4f0f0 0%, #a8dcd9 100%);
+          font-family: 'Sarabun', 'Segoe UI', sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 60px 20px;
+        }
+        .my-reg-title {
+          color: #26a69a;
+          font-size: 32px;
+          font-weight: bold;
+          margin-bottom: 24px;
+          text-align: center;
+        }
+        .my-reg-card {
+          background: #ffffff;
+          width: 100%;
+          max-width: 650px;
+          border-radius: 12px;
+          padding: 30px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .my-reg-step-header {
+          background-color: #26a69a;
+          color: white;
+          padding: 14px 20px;
+          border-radius: 8px;
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 24px;
+        }
+        .my-reg-row {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+        .my-reg-input {
+          flex: 1;
+          width: 100%;
+          padding: 12px 16px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          font-size: 15px;
+          color: #374151;
+          outline: none;
+          transition: border-color 0.2s;
+          background-color: white;
+        }
+        .my-reg-input:focus {
+          border-color: #26a69a;
+          box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
+        }
+        .my-reg-btn {
+          width: 100%;
+          background-color: #26a69a;
+          color: white;
+          padding: 14px;
+          border: none;
+          border-radius: 30px; /* ทำให้ปุ่มโค้งมนแบบแคปซูล */
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          margin-top: 10px;
+          transition: background-color 0.2s;
+        }
+        .my-reg-btn:hover {
+          background-color: #00897b;
+        }
+        
+        /* จัดการเรื่อง Responsive ตอนดูบนมือถือ */
+        @media (max-width: 500px) {
+          .my-reg-row {
+            flex-direction: column;
+            gap: 10px;
+          }
+        }

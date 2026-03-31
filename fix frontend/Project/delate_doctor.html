@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลบข้อมูล</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+   <header class="main-header">
+        <h1>ระบบนัดเเพทย์โรงพยาบาล</h1>
+    </header>
+   
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="#" class="nav-item active">ข้อมูลเเพทย์</a>
+            </nav>
+        </aside>
+<main class="content">
+    <div class="card">
+    <h2>ลบข้อมูลเเพทย์</h2>
+    <form onsubmit="goNext(event)">
+        <label>รหัสเเพทย์</label>
+        <input type="number" name="doctor_id"><br>
+
+        <button type="submit">ลบข้อมูล</button>
+    </form>
+</main>
+    </div>
+    <script>
+function goNext(e) {
+    e.preventDefault(); // กันรีเฟรช
+
+    // ไปหน้าใหม่
+    window.location.href = "doctor.html";
+}
+</script>
+</body>
+</html>

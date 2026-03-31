@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เเก้ไขข้อมูลหมอ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+   <header class="main-header">
+        <h1>ระบบนัดเเพทย์โรงพยาบาล</h1>
+    </header>
+   
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="#" class="nav-item active">ข้อมูลเเพทย์</a>
+            </nav>
+        </aside>
+<main class="content">
+    <div class="card">
+    <h2>เเก้ไขข้อมูลเเพทย์</h2>
+    <form onsubmit="goNext(event)">
+         ชื่อหมอ:
+        <input type="text" name="first_name"><br>
+
+        นามสกุลหมอ:
+        <input type="text" name="last_name"><br>
+
+        เเผนก:
+        <input type="text" name="department_id"><br>
+
+        เบอร์โทร:
+        <input type="number" name="Phone"><br>
+
+<button type="submit">เเก้ไขข้อมูลเเพทย์</button>
+    </form>
+</main>
+    </div>
+    <script>
+function goNext(e) {
+    e.preventDefault(); // กันรีเฟรช
+
+    // ไปหน้าใหม่
+    window.location.href = "doctor.html";
+}
+</script>
+</body>
+</html>

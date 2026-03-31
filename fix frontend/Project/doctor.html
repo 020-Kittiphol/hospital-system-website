@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+   
+    <title>ระบบนัดหมอโรงพยาบาล</title>
+    <link rel="stylesheet" href="bbb.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+   <div class="login-container">
+    <a href="sing-out.html" class="login-btn">Sing out</a>
+        </div>
+    </div>
+    <header class="main-header">
+        <h1>ระบบนัดหมอโรงพยาบาล</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="register.html" class="nav-item active">ข้อมูลผู้ใช้</a>
+                <a href="appointment.html" class="nav-item active">ข้อมูลการนัดหมาย</a>
+                <a href="department.html" class="nav-item active">ข้อมูลแผนก</a>
+                <a href="#" class="nav-item active">ข้อมูลเเพทย์</a>
+               
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>ข้อมูลเเพทย์</h2>
+                   <div class="action-bar">
+                    <nav>
+                        <a href="add_doctor.html" class="btn btn-add">+ เพิ่มข้อมูลเเพทย์</a>
+                        <a href="delate_doctor.html" class="btn btn-delete">- ลบข้อมูลเเพทย์</a>
+                        <a href="edit_doctor.html" class="btn btn-edit">เเก้ไขข้อมูลเเพทย์ </a>
+                    </nav>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ชื่อหมอ</th>
+                                <th>เเผนก</th>
+                                <th>เบอร์โทร</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="bbb.js"></script>
+</body>
+</html>

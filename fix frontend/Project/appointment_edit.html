@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
+    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="#" class="nav-item active">แก้ไขข้อมูลการนัดหมาย</a>
+            </nav>
+         </aside>
+    <main class="content">
+        <div class="card">
+            <center>
+            <h2>แก้ไขข้อมูลการนัดหมาย</h2>
+            <br>
+            
+            <form onsubmit="goNext(event)">
+                ชื่อ-นามสกุลคนไข้:
+                <input type="text" name="first_name"><br> <br>
+
+                รายชื่อแพทย์:
+                <input type="text" name="name_name"><br> <br>
+
+                แผนกแพทย์:
+                <input type="text" name="panak_name"><br> <br>
+
+                วัน/เดือน/ปี:
+                <input type="date" name="date"><br> <br>
+
+                เวลา:
+                <input type="time" name="time"><br> <br>
+
+                <button type="submit" > ตกลง</button>
+                <button type="reset"> ยกเลิก</button>
+
+            </form>
+            </center>
+            </div>
+        </div>
+    </main>
+    </div>
+    <script>
+function goNext(e) {
+    e.preventDefault(); // กันรีเฟรช
+
+    // ไปหน้าใหม่
+    window.location.href = "appointment.html";
+}
+</script>
+</body>
+</html>

@@ -1,27 +1,21 @@
 "use client"
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './style3.css';
 import { useState, useEffect } from 'react';
-import { redirect } from 'next/navigation';
-import { Form, Row, Col, Button } from 'react-bootstrap';
-import md5 from 'md5';
 import { useRouter } from 'next/navigation';
+import md5 from 'md5';
 
-export default function SignIn() {
+export default function LoginPage() {
     const router = useRouter();
-
-    const [validated, setValidated] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         localStorage.setItem("access_token", "notoken");
     }, []);
 
     const getAuthenKey = async () => {
-        var baseString = username + "&" + md5(password);
-        var authenSignature = md5(baseString);
-
         const response = await fetch("http://localhost:8080/api/authen_request", {
             method: "POST",
             headers: {
@@ -32,7 +26,6 @@ export default function SignIn() {
                 authen_request: md5(username)
             })
         });
-
         const d = await response.json();
         return d;
     }
@@ -49,7 +42,6 @@ export default function SignIn() {
                 auth_key: authenKey.data
             })
         });
-
         const d = await response.json();
         return d;
     }
@@ -58,78 +50,71 @@ export default function SignIn() {
         try {
             const authenKey = await getAuthenKey();
             const d = await getAccessKey(authenKey);
-            console.log("d:", d);
 
-            if(d.isErr){
-                console.log("error:", d.errMessage);
+            if (d.isErr || !d.result) {
+                setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
                 return;
             }
 
-        localStorage.setItem("access_token", d.data.access_token);
-        localStorage.setItem("user_id", d.data.user_info.user_id);
-        localStorage.setItem("username", d.data.user_info.username);
-        localStorage.setItem("first_name", d.data.user_info.first_name);
-        localStorage.setItem("last_name", d.data.user_info.last_name);
-        localStorage.setItem("role_id", d.data.user_info.role_id);
-        localStorage.setItem("tel_num", d.data.user_info.tel_num);
-        localStorage.setItem("address", d.data.user_info.address);
-        localStorage.setItem("email", d.data.user_info.email);
+            localStorage.setItem("access_token", d.data.access_token);
+            localStorage.setItem("user_id", d.data.user_info.user_id);
+            localStorage.setItem("username", d.data.user_info.username);
+            localStorage.setItem("first_name", d.data.user_info.first_name);
+            localStorage.setItem("last_name", d.data.user_info.last_name);
+            localStorage.setItem("age", d.data.user_info.age);
+            localStorage.setItem("nationality", d.data.user_info.nationality);
+            localStorage.setItem("citizen_id", d.data.user_info.citizen_id);
+            localStorage.setItem("gender", d.data.user_info.gender);
+            localStorage.setItem("weight", d.data.user_info.weight);
+            localStorage.setItem("height", d.data.user_info.height);
+            localStorage.setItem("house_num", d.data.user_info.house_num);
+            localStorage.setItem("village_num", d.data.user_info.village_num);
+            localStorage.setItem("alley", d.data.user_info.alley);
+            localStorage.setItem("road", d.data.user_info.road);
+            localStorage.setItem("sub_district", d.data.user_info.sub_district);
+            localStorage.setItem("district", d.data.user_info.district);
+            localStorage.setItem("province", d.data.user_info.province);
+            localStorage.setItem("postal_code", d.data.user_info.postal_code);
+            localStorage.setItem("symptoms", d.data.user_info.symptoms);
+            localStorage.setItem("role_id", d.data.user_info.role_id);
 
-        if (d.data.user_info.role_id === 1) {
-            router.push("/users");
-        }
-        //}//else if (d.data.user_info.role_id === 2) {
-        //  router.push("/patients");
-        //}
+            if (parseInt(d.data.user_info.role_id) === 1) {
+                router.push("./home");
+            }
 
         } catch(err) {
-            console.log("error:", err); 
+            console.log("error:", err);
+            setError("เกิดข้อผิดพลาด กรุณาลองใหม่");
         }
-    };
+    }
 
-    const onSignIn = (event) => {
-        const form = event.currentTarget;
-        event.preventDefault();
-
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        } else {
-            doSignIn();
-        }
-        setValidated(true);
-    };
+    const login = (e) => {
+        e.preventDefault();
+        doSignIn();
+    }
 
     return (
-        <div className='container m-auto'>
-            <Form noValidate validated={validated} onSubmit={onSignIn}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId='validateUsername'>
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control
-                            required
-                            type='text'
-                            placeholder='username'
-                            onChange={(e) => setUsername(e.target.value)} />
-                        <Form.Control.Feedback type='invalid'>กรุณากรอก Username</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId='validatePassword'>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            required
-                            type='password'
-                            placeholder='password'
-                            onChange={(e) => setPassword(e.target.value)} />
-                        <Form.Control.Feedback type='invalid'>กรุณากรอก Password</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Col md={3}>
-                        <Button type='submit'>Sign In</Button>
-                    </Col>
-                </Row>
-            </Form>
+        <div className="login-body">
+            <div className="login-box">
+                <h2>Hospital Login</h2>
+
+                <form onSubmit={login}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        required
+                        onChange={(e) => setUsername(e.target.value)} />
+                    <input
+                        type="password"
+                        placeholder="password"
+                        required
+                        onChange={(e) => setPassword(e.target.value)} />
+
+                    <button type="submit">เข้าสู่ระบบ</button>
+                </form>
+
+                {error && <p className="error">{error}</p>}
+            </div>
         </div>
     );
 }

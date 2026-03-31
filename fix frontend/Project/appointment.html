@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+   
+    <title>ระบบนัดแพทย์โรงพยาบาล</title>
+    <link rel="stylesheet" href="bbb.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+       <a href="sing-out.html" class="login-btn">Sing out</a>
+        </div>
+    </div>
+    </div>
+    <header class="main-header">
+        <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="register.html" class="nav-item active">ข้อมูลผู้ใช้</a>
+                <a href="#" class="nav-item active">ข้อมูลการนัดหมาย</a>
+                <a href="department.html" class="nav-item active">ข้อมูลแผนก</a>
+                <a href="doctor.html" class="nav-item active">ข้อมูลแพทย์</a>
+
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>ข้อมูลการนัดหมาย</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-edit" id="btnEdit"
+                        onclick="window.location.href='appointment_edit.html'"> <b>แก้ไข</b>
+                        </button>
+
+                        <button class="btn btn-cancle" id="btnCancle"
+                        onclick="window.location.href='appointment_cancle.html'"> <b>ยกเลิก</b>
+                        </button>
+                    </div>
+                </div>
+            
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>รายชื่อคนไข้</th>
+                                <th>รายชื่อแพทย์</th>
+                                <th>แผนกของแพทย์</th>
+                                <th>วัน/เดือน/ปี</th>
+                                <th>เวลา</th>
+                            </tr>
+                        </thead>
+                        <tbody id="AppointmentTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="bbb.js"></script>
+</body>
+</html>

@@ -2,11 +2,11 @@ const http = require('http');
 const bp = require('body-parser');
 const express = require('express');
 // var jwt = require('jsonwebtoken'); lib jwt
-const jwt = require('./libs/jwt');
+const jwt = require('./users-app/libs/jwt');
 const cors = require('cors');
 
-const users = require('./models/users');
-const authen = require('./models/authen');
+const users = require('./users-app/src/app/models/users');
+const authen = require('./users-app/src/app/models/authen');
 
 const app = express();
 app.use(cors());
@@ -39,7 +39,7 @@ const checkAccessToken = async (req, res, next) => {
         });
 }
 
-app.get("/api/users/all", async (req, res) => {
+app.get("/api/users/all", checkAccessToken, async (req, res) => {
     var results = await users.getAllUser();
     var response ={
         isErr: false,
@@ -104,9 +104,6 @@ app.post("/api/access_request", async (req, res) => {
                         first_name: rs.data.first_name,
                         last_name: rs.data.last_name,
                         role_id: rs.data.role_id,
-                        tel_num: rs.data.tel_num,
-                        address: rs.data.address,
-                        email: rs.data.email
                     };
 
                     const accessToken = jwt.sign(payload, "My_hidden_key");

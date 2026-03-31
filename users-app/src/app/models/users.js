@@ -2,7 +2,7 @@ const pool = require('./db_pool');
 
 module.exports = {
     getAllUser: async() => {
-        var query = "SELECT a.user_id, a.username, a.first_name, a.last_name, a.tel_num, a.address, a.email, a.role_id "
+        var query = "SELECT a.user_id, a.username, a.first_name, a.last_name, a.role_id "
           + "FROM users a "
           + "JOIN roles b ON a.role_id = b.role_id";
 
