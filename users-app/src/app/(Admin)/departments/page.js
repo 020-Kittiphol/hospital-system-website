@@ -8,9 +8,6 @@ import './bbb-2.css';
 export default function DepartmentsPage() {
     const router = useRouter();
 
-    // ==========================================
-    // State สำหรับจัดการข้อมูลและ Modal
-    // ==========================================
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [departments, setDepartments] = useState([
         { id: 1, date: '2026-03-31T10:00', name: 'อายุรกรรม' },
@@ -36,11 +33,9 @@ export default function DepartmentsPage() {
     };
 
     return (
-        /* 🚨 ตรงนี้แหละครับ! ต้องมี <> ครอบเปิดไว้เสมอ */
         <> 
             <div className="dept-page-container">
                 
-                {/* ส่วนหัว */}
                 <header className="dept-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
                     <button 
@@ -51,10 +46,8 @@ export default function DepartmentsPage() {
                     </button>
                 </header>
 
-                {/* โครงสร้างซ้าย-ขวา */}
                 <div className="dept-body">
-                    
-                    {/* แถบเมนูซ้าย */}
+
                     <aside className="dept-sidebar">
                         <Link href="/users">ข้อมูลผู้ใช้</Link>
                         <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
@@ -62,11 +55,9 @@ export default function DepartmentsPage() {
                         <Link href="/doctors">ข้อมูลแพทย์</Link>
                     </aside>
 
-                    {/* เนื้อหาตรงกลาง */}
                     <main className="dept-content">
                         <div className="dept-card">
                             
-                            {/* หัวข้อและปุ่มเพิ่ม */}
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '25px' }}>
                                 <h2 style={{ color: '#3e9d8a', margin: 0 }}>ข้อมูลแผนก</h2>
                                 <button 
@@ -78,7 +69,6 @@ export default function DepartmentsPage() {
                                 </button>
                             </div>
 
-                            {/* ตารางข้อมูล */}
                             <div style={{ overflowX: 'auto', border: '1px solid #ddd', borderRadius: '8px' }}>
                                 <table className="dept-table">
                                     <thead>
@@ -121,7 +111,6 @@ export default function DepartmentsPage() {
                 </div>
             </div>
 
-            {/* MODAL - ป๊อปอัปสำหรับเพิ่มข้อมูล */}
             {isModalOpen && (
                 <div style={{ display: 'flex', position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
                     <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '100%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
@@ -163,8 +152,6 @@ export default function DepartmentsPage() {
                     </div>
                 </div>
             )}
-
-        {/* 🚨 ต้องปิดด้วย </> เสมอ */}
         </>
     );
 }

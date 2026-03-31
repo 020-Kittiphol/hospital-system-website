@@ -20,13 +20,11 @@ export default function EditDoctorPage() {
 
     return (
         <div>
-            {/* ส่วนหัวของระบบ */}
             <header className="main-header">
                 <h1>ระบบนัดเเพทย์โรงพยาบาล</h1>
             </header>
            
             <div className="container">
-                {/* เมนูด้านซ้าย */}
                 <aside className="sidebar">
                     <nav>
                         <Link href="/doctors" className="nav-item active">
@@ -35,7 +33,6 @@ export default function EditDoctorPage() {
                     </nav>
                 </aside>
 
-                {/* เนื้อหาการแก้ไขข้อมูล */}
                 <main className="content">
                     <div className="card">
                         <h2 style={{ color: '#3e9d8a', marginBottom: '20px' }}>เเก้ไขข้อมูลเเพทย์</h2>

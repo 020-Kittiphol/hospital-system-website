@@ -26,7 +26,7 @@ export default function DeleteDoctorPage() {
 
             if (response.ok) {
                 alert("ลบข้อมูลสำเร็จแล้ว 🗑️");
-                router.push('/doctors'); // ลบเสร็จ เด้งกลับไปหน้าตาราง
+                router.push('/doctors');
             } else {
                 const data = await response.json();
                 alert(`ลบไม่สำเร็จ: ${data.error || 'ไม่พบข้อมูล'}`);

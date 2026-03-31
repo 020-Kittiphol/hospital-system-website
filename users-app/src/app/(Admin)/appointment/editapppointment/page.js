@@ -9,18 +9,15 @@ export default function EditAppointmentPage() {
 
     // ฟังก์ชันเมื่อกดปุ่ม "ตกลง"
     const handleEditAppointment = (e) => {
-        e.preventDefault(); // กันการรีเฟรชหน้าเว็บ
+        e.preventDefault();
 
-        // จำลองการแจ้งเตือน (อนาคตค่อยเขียนให้เซฟลง Database จริงๆ ตรงนี้)
         alert("แก้ไขข้อมูลการนัดหมายเรียบร้อยแล้ว ✅");
 
-        // ย้ายกลับไปหน้าตารางการนัดหมาย
         router.push("/appointment");
     };
 
-    // ฟังก์ชันเมื่อกดปุ่ม "ยกเลิก"
     const handleCancel = () => {
-        router.push("/appointment"); // พาผู้ใช้กลับไปหน้าเดิมโดยไม่บันทึก
+        router.push("/appointment"); 
     };
 
     return (
@@ -73,7 +70,6 @@ export default function EditAppointmentPage() {
                                 <input type="time" name="time" className="form-control" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }} required />
                             </div>
 
-                            {/* กลุ่มปุ่ม ตกลง / ยกเลิก */}
                             <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
                                 <button 
                                     type="submit" 

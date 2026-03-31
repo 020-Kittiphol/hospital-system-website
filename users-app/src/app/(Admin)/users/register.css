@@ -58,7 +58,7 @@
           color: white;
           padding: 14px;
           border: none;
-          border-radius: 30px; /* ทำให้ปุ่มโค้งมนแบบแคปซูล */
+          border-radius: 30px;
           font-size: 16px;
           font-weight: bold;
           cursor: pointer;
@@ -69,7 +69,6 @@
           background-color: #00897b;
         }
         
-        /* จัดการเรื่อง Responsive ตอนดูบนมือถือ */
         @media (max-width: 500px) {
           .my-reg-row {
             flex-direction: column;

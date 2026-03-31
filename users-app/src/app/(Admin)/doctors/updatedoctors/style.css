@@ -181,9 +181,6 @@ td {
     background: #f0f0f0;
 }
 
-/* =========================================
-   7. หน้า Dashboard/Hero (Menu Cards)
-========================================= */
 .navbar {
     background: white;
     padding: 12px 30px;
@@ -225,7 +222,7 @@ td {
     letter-spacing: 5px;
     color: #004d40;
     animation: fadeIn 1s ease;
-    z-index: 2; /* ทำให้ข้อความอยู่บนพื้นหลังเบลอ */
+    z-index: 2;
 }
 
 .menu-section {

@@ -21,10 +21,8 @@ export default function AppointmentPage() {
                     </button>
                 </header>
 
-                {/* โครงสร้างซ้าย-ขวา */}
                 <div className="app-body">
                     
-                    {/* แถบเมนูซ้าย */}
                     <aside className="app-sidebar">
                         <Link href="/users">ข้อมูลผู้ใช้</Link>
                         <Link href="/appointment" className="active">ข้อมูลการนัดหมาย</Link>
@@ -32,16 +30,13 @@ export default function AppointmentPage() {
                         <Link href="/doctors">ข้อมูลแพทย์</Link>
                     </aside>
 
-                    {/* เนื้อหาตรงกลาง */}
                     <main className="app-content">
                         <div className="app-card">
                             
-                            {/* หัวข้อและปุ่ม */}
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '25px' }}>
                                 <h2 style={{ color: '#3e9d8a', margin: 0 }}>ข้อมูลการนัดหมาย</h2>
                                 
                                 <div style={{ display: 'flex', gap: '10px' }}>
-                                    {/* 💡 เช็ค URL ตรง router.push ให้ตรงกับโฟลเดอร์ของเจมด้วยนะครับ */}
                                     <button 
                                         className="app-btn" 
                                         style={{ backgroundColor: '#ff9800' }}

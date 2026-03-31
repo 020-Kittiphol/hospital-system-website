@@ -16,7 +16,7 @@ export default function DoctorsPage() {
                 const response = await fetch('/api/doctors');
                 if (response.ok) {
                     const data = await response.json();
-                    setDoctors(data); // เก็บข้อมูลลง State
+                    setDoctors(data);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -92,22 +92,17 @@ export default function DoctorsPage() {
                                             <tr><td colSpan="4" style={{ padding: '30px' }}>กำลังโหลดข้อมูลจากฐานข้อมูล... ⏳</td></tr>
                                         ) : doctors.length > 0 ? (
                                             
-                                            // 🌟 วนลูปสร้างแถวตามจำนวนข้อมูลหมอที่มี
                                             doctors.map((doc, index) => (
                                                 <tr key={doc.doctor_id || index}>
-                                                    
-                                                    {/* แสดงรหัสหมอ (ตัวแดง หนา) */}
+                                    
                                                     <td style={{ fontWeight: 'bold', color: '#e74c3c' }}>
                                                         {doc.doctor_id}
                                                     </td>
                                                     
-                                                    {/* แสดงชื่อ-นามสกุล */}
                                                     <td>{doc.first_name} {doc.last_name}</td>
                                                     
-                                                    {/* แสดงรหัสแผนก */}
                                                     <td>{doc.department_id}</td>
-                                                    
-                                                    {/* แสดงเบอร์โทร ถ้าไม่มี (เป็น null หรือ "") จะโชว์ขีด - */}
+                                                
                                                     <td>{doc.tel_numdoc ? doc.tel_numdoc : "-"}</td>
                                                     
                                                 </tr>

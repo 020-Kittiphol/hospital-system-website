@@ -3,12 +3,10 @@ const pool = require('../../../models/db_pool');
 
 export const dynamic = 'force-dynamic';
 
-// ฟังก์ชันสำหรับลบข้อมูลแพทย์ตาม ID
 export async function DELETE(request, { params }) {
     try {
-        const id = params.id; // ดึง ID จาก URL
+        const id = params.id;
 
-        // สั่ง MySQL ให้ลบข้อมูลที่มี ID ตรงกับที่ส่งมา
         const [result] = await pool.query('DELETE FROM doctors WHERE id = ?', [id]);
 
         if (result.affectedRows === 0) {
@@ -27,7 +25,6 @@ export default function DoctorsPage() {
     const [doctors, setDoctors] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // ฟังก์ชันสำหรับดึงข้อมูล (เหมือนเดิม)
     const fetchDoctors = async () => {
         try {
             const response = await fetch('/api/doctors');
@@ -44,9 +41,7 @@ export default function DoctorsPage() {
         fetchDoctors();
     }, []);
 
-    // 🌟 ฟังก์ชันสำหรับลบข้อมูล
     const handleDelete = async (id, name) => {
-        // ถามเพื่อความแน่ใจก่อนลบ
         const isConfirm = window.confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลของ "นพ./พญ. ${name}"?`);
         
         if (isConfirm) {
@@ -57,7 +52,7 @@ export default function DoctorsPage() {
 
                 if (response.ok) {
                     alert("ลบข้อมูลสำเร็จแล้ว ✅");
-                    fetchDoctors(); // ดึงข้อมูลใหม่ทันทีเพื่ออัปเดตตาราง
+                    fetchDoctors();
                 } else {
                     alert("เกิดข้อผิดพลาดในการลบข้อมูล");
                 }
@@ -69,14 +64,13 @@ export default function DoctorsPage() {
     };
 
     return (
-        // ... (โครงสร้าง HTML เดิม)
         <table className="beautiful-table">
             <thead>
                 <tr>
                     <th>ชื่อหมอ</th>
                     <th>รหัสเเผนก</th>
                     <th>เบอร์โทร</th>
-                    <th>จัดการ</th> {/* เพิ่มคอลัมน์จัดการ */}
+                    <th>จัดการ</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,7 +80,6 @@ export default function DoctorsPage() {
                         <td>{doc.department_id}</td>
                         <td>{doc.phone}</td>
                         <td>
-                            {/* 🌟 ปุ่มลบข้อมูลในแต่ละแถว */}
                             <button 
                                 onClick={() => handleDelete(doc.id, doc.first_name)}
                                 className="btn-modern btn-red"
@@ -99,6 +92,5 @@ export default function DoctorsPage() {
                 ))}
             </tbody>
         </table>
-        // ...
     );
 }
