@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นัดหมอ</title>
+    <link rel="stylesheet" href="bbb.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>นัดหมอ</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="#" class="nav-item active">ข้อมูลแผนก</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>ข้อมูลแผนก</h2>
+                    <button class="btn btn-add" id="btnAddDepartment">+ เพิ่ม</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>ชื่อแผนก</th>
+                                <th>ยอดนัด</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="bbb.js"></script>
+</body>
+</html>
