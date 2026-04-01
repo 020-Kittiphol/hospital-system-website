@@ -5,29 +5,25 @@ import { useRouter } from 'next/navigation';
 
 export default function AddDoctorPage() {
     const router = useRouter();
-
-    // ฟังก์ชันนี้จะทำงานตอนแอดมินกดปุ่ม "บันทึกข้อมูลหมอ"
+    
     const handleAddDoctor = async (e) => {
-        e.preventDefault(); // กันเว็บรีเฟรชหน้า
+        e.preventDefault();
         
-        // 1. ดึงข้อมูลทั้งหมดที่แอดมินพิมพ์ในช่องกรอก
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
         try {
-            // 2. ส่งข้อมูลไปที่ API ที่เราสร้างไว้ในสเต็ป 1
             const response = await fetch('/api/doctors', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data), // แปลงข้อมูลเป็น JSON
+                body: JSON.stringify(data),
             });
 
-            // 3. เช็คว่าบันทึกสำเร็จไหม
             if (response.ok) {
                 alert("บันทึกข้อมูลแพทย์ลงฐานข้อมูลเรียบร้อยแล้ว ✅");
-                router.push("/doctors"); // เด้งกลับไปหน้าตารางหมอ
+                router.push("/doctors");
             } else {
                 const errorData = await response.json();
                 alert("เกิดข้อผิดพลาด: " + errorData.error);
@@ -49,7 +45,6 @@ export default function AddDoctorPage() {
                 .modern-sidebar a:hover { background-color: rgba(255,255,255,0.1); color: white; }
                 .modern-sidebar a.active { background-color: white; color: #3e9d8a; font-weight: bold; border-left: 5px solid #f39c12; }
                 
-                /* จัดฟอร์มให้อยู่ตรงกลางจอ */
                 .modern-content { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; overflow-x: auto; }
                 .card-form { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); width: 100%; max-width: 500px; margin-top: 20px; }
                 
@@ -80,7 +75,6 @@ export default function AddDoctorPage() {
                             <form onSubmit={handleAddDoctor}>
                                 <div className="form-group">
                                     <label className="form-label">ชื่อหมอ</label>
-                                    {/* name ต้องตรงกับตัวแปรฝั่ง API */}
                                     <input type="text" name="first_name" className="form-input" placeholder="เช่น ใจดี" required />
                                 </div>
 
