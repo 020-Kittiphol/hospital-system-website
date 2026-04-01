@@ -19,7 +19,6 @@ export default function DeleteDoctorPage() {
         if (!isConfirm) return;
 
         try {
-            // ยิง API ไปที่โฟลเดอร์ [id] ที่เราสร้างไว้
             const response = await fetch(`/api/doctors/${doctorId}`, {
                 method: 'DELETE',
             });
