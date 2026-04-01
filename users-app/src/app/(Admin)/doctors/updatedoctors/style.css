@@ -113,7 +113,6 @@ td {
     box-shadow: 0 0 5px rgba(0, 150, 136, 0.3);
 }
 
-/* ปุ่ม Submit ในฟอร์ม */
 .card button[type="submit"] {
     margin-top: 20px;
     padding: 12px;
