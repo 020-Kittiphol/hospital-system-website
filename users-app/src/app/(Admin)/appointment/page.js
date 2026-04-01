@@ -10,7 +10,6 @@ export default function AppointmentPage() {
     return (
             <div className="app-page-container">
                 
-                {/* ส่วนหัว */}
                 <header className="app-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
                     <button 
@@ -40,21 +39,20 @@ export default function AppointmentPage() {
                                     <button 
                                         className="app-btn" 
                                         style={{ backgroundColor: '#ff9800' }}
-                                        onClick={() => router.push('/appointment/editappointment')}
+                                        onClick={() => router.push('/appointment/editapppointment')}
                                     >
                                         แก้ไข
                                     </button>
                                     <button 
                                         className="app-btn" 
                                         style={{ backgroundColor: '#f44336' }}
-                                        onClick={() => router.push('/appointment/cancel')}
+                                        onClick={() => router.push('/appointment/cancelapppointment')}
                                     >
                                         ยกเลิก
                                     </button>
                                 </div>
                             </div>
 
-                            {/* ตารางข้อมูล */}
                             <div style={{ overflowX: 'auto', border: '1px solid #ddd', borderRadius: '8px' }}>
                                 <table className="app-table">
                                     <thead>
