@@ -7,14 +7,11 @@ import './style.css';
 export default function EditDoctorPage() {
     const router = useRouter();
 
-    // ฟังก์ชันจัดการเมื่อกดปุ่ม "แก้ไขข้อมูลแพทย์"
     const handleEditDoctor = (e) => {
-        e.preventDefault(); // กันการรีเฟรชหน้าเว็บ
+        e.preventDefault();
         
-        // จำลองการแจ้งเตือน
         alert("แก้ไขข้อมูลแพทย์เรียบร้อยแล้ว ✅");
-        
-        // กลับไปยังหน้ารายชื่อแพทย์
+
         router.push("/doctors");
     };
 
