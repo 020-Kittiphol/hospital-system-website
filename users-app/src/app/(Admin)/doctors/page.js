@@ -12,7 +12,6 @@ export default function DoctorsPage() {
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                // ดึงข้อมูลจาก API ของเรา
                 const response = await fetch('/api/doctors');
                 if (response.ok) {
                     const data = await response.json();
