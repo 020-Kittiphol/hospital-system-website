@@ -1,4 +1,5 @@
 "use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -7,7 +8,6 @@ import './bbb.css';
 export default function EditAppointmentPage() {
     const router = useRouter();
 
-    // ฟังก์ชันเมื่อกดปุ่ม "ตกลง"
     const handleEditAppointment = (e) => {
         e.preventDefault();
 
