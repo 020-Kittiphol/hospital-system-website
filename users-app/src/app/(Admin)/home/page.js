@@ -11,23 +11,19 @@ export default function HomePage() {
         <>
             <div className="home-wrapper">
                 
-                {/* ปุ่ม Sign Out */}
                 <button className="home-signout" onClick={() => router.push('/signin')}>
                     Sign out
                 </button>
 
-                {/* แบนเนอร์ WELCOME */}
                 <div className="home-hero">
                     <div className="home-hero-overlay"></div>
                     <h1>WELCOME</h1>
                 </div>
 
-                {/* เมนูด้านล่าง */}
                 <div className="home-content">
                     <div className="home-title">หน้าแรก</div>
                     
                     <div className="home-cards-container">
-                        {/* 💡 เปลี่ยน href ให้ตรงกับชื่อโฟลเดอร์ของเจมนะครับ */}
                         <Link href="/appointment" className="home-card">
                             นัดพบแพทย์
                         </Link>
