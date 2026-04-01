@@ -19,7 +19,7 @@ export default function RegisterPage() {
 
         <div className="my-reg-card">
           <form onSubmit={handleSubmit}>
-            {/* ✅ STEP 1 */}
+            
             {step === 1 && (
               <div>
                 <div className="my-reg-step-header">1. ข้อมูล</div>
@@ -58,8 +58,7 @@ export default function RegisterPage() {
                 </button>
               </div>
             )}
-
-            {/* ✅ STEP 2 */}
+  
             {step === 2 && (
               <div>
                 <div className="my-reg-step-header">2. ที่อยู่</div>
@@ -91,12 +90,11 @@ export default function RegisterPage() {
                   <input type="text" className="my-reg-input" placeholder="รหัสไปรษณีย์" />
                 </div>
 
-                {/* ปุ่มกดย้อนกลับและถัดไป (วางคู่กัน) */}
                 <div className="my-reg-row" style={{ marginTop: '24px' }}>
                   <button
                     type="button"
                     className="my-reg-btn"
-                    style={{ backgroundColor: '#9ca3af' }} /* เปลี่ยนสีปุ่มย้อนกลับให้เป็นสีเทา */
+                    style={{ backgroundColor: '#9ca3af' }} 
                     onClick={() => setStep(1)}
                   >
                     ย้อนกลับ
@@ -121,12 +119,11 @@ export default function RegisterPage() {
                   <textarea 
                     className="my-reg-input" 
                     placeholder="ระบุอาการเบื้องต้นของคุณที่นี่..." 
-                    rows="5" /* กำหนดความสูงของกล่องข้อความ */
-                    style={{ resize: 'vertical' }} /* ให้ผู้ใช้ลากขยายแนวตั้งได้ */
+                    rows="5"
+                    style={{ resize: 'vertical' }}
                   ></textarea>
                 </div>
 
-                {/* ปุ่มกดย้อนกลับและปุ่มเสร็จสิ้น */}
                 <div className="my-reg-row" style={{ marginTop: '24px' }}>
                   <button
                     type="button"
@@ -137,9 +134,9 @@ export default function RegisterPage() {
                     ย้อนกลับ
                   </button>
                   <button
-                    type="submit" /* ปุ่มนี้ต้องเป็น type="submit" เพื่อให้ฟอร์มทำงาน (วิ่งไปที่หน้า success) */
+                    type="submit"
                     className="my-reg-btn"
-                    style={{ backgroundColor: '#059669' }} /* สีเขียวเข้มขึ้นเพื่อเน้นว่าเป็นปุ่มยืนยันสุดท้าย */
+                    style={{ backgroundColor: '#059669' }}
                   >
                     เสร็จสิ้น
                   </button>
