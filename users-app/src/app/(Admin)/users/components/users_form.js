@@ -108,9 +108,8 @@ export default function RegisterPage() {
                   </button>
                 </div>
               </div>
-            )}
+            )
 
-            {/* ✅ STEP 3 */}
             {step === 3 && (
               <div>
                 <div className="my-reg-step-header">3. อาการเบื้องต้น</div>
