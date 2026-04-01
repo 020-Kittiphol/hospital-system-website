@@ -159,7 +159,6 @@ td {
 .btn-delete { background: #f44336; color: white; }
 .btn-delete:hover { background: #d32f2f; }
 
-/* ปุ่มล็อกอินมุมขวาบน */
 .login-container {
     position: absolute;
     top: 15px;
