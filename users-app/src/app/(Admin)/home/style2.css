@@ -1,13 +1,12 @@
  .home-wrapper {
                     min-height: 100vh;
-                    background-color: #e8f0ed; /* สีพื้นหลังเว็บ */
+                    background-color: #e8f0ed;
                     font-family: 'Sarabun', 'Segoe UI', sans-serif;
                     margin: 0;
                     display: flex;
                     flex-direction: column;
                 }
                 
-                /* ปุ่ม Sign Out มุมขวาบน */
                 .home-signout {
                     position: absolute;
                     top: 20px;
@@ -28,20 +27,17 @@
                     transform: scale(1.05);
                 }
 
-                /* แบนเนอร์ด้านบน (Hero Section) */
                 .home-hero {
                     position: relative;
                     height: 350px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    /* ใส่รูปพื้นหลังตรงนี้ ถ้ามี URL รูปภาพให้เปลี่ยนตรง url() ครับ */
                     background-image: url('/home_back.jpg');
                     background-size: cover;
                     background-position: center;
                 }
                 
-                /* แผ่นฟิล์มเบลอๆ ทับรูปภาพ */
                 .home-hero-overlay {
                     position: absolute;
                     inset: 0;
@@ -49,7 +45,6 @@
                     backdrop-filter: blur(5px);
                 }
 
-                /* ตัวหนังสือ WELCOME */
                 .home-hero h1 {
                     position: relative;
                     z-index: 2;
@@ -60,7 +55,6 @@
                     font-weight: bold;
                 }
 
-                /* ส่วนเมนูด้านล่าง */
                 .home-content {
                     flex: 1;
                     padding: 40px 20px;
@@ -76,21 +70,18 @@
                     font-weight: bold;
                 }
 
-                /* กล่องใส่การ์ดเมนู (ห้ามให้ยืด) */
                 .home-cards-container {
                     display: flex;
                     justify-content: center;
                     gap: 30px;
                     flex-wrap: wrap;
                     max-width: 1200px;
-                    /* 🚨 บรรทัดนี้สำคัญมาก! ป้องกันไม่ให้การ์ดยืดความสูงแนวตั้ง */
                     align-items: flex-start; 
                 }
 
-                /* ดีไซน์ของการ์ดแต่ละใบ */
                 .home-card {
                     width: 240px;
-                    height: 140px; /* ล็อกความสูงไว้เลย */
+                    height: 140px;
                     background: white;
                     border-radius: 15px;
                     display: flex;
