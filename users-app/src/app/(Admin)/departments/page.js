@@ -10,9 +10,7 @@ export default function DepartmentsPage() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [departments, setDepartments] = useState([
-        { id: 1, date: '2026-03-31T10:00', name: 'อายุรกรรม' },
-        { id: 2, date: '2026-04-01T13:30', name: 'ศัลยกรรม' },
-    ]);
+     ]);
     const [formData, setFormData] = useState({ date: '', name: '' });
     
     // --- ส่วนที่เพิ่มใหม่: เก็บ ID ของตัวที่กำลังจะแก้ไข ---
