@@ -33,30 +33,31 @@ export async function PUT(request, context) {
   try {
     const params = await context.params;
     const id = params.id;
-    const { doctor_name, department_id, phone } = await request.json();
+    const body = await request.json();
+    const { doctor_name, department_id } = body; // ไม่รับ phone แล้ว
 
-    if (!doctor_name) {
-      return NextResponse.json({ error: "กรุณาระบุชื่อแพทย์" }, { status: 400 });
-    }
-
- 
     const nameParts = doctor_name.trim().split(" ");
     const first_name = nameParts[0];
     const last_name = nameParts.slice(1).join(" ") || "";
 
- 
+    // ตัด tel_num = ? ออกจากคำสั่ง SQL
     const [result] = await pool.query(
-      'UPDATE doctor SET first_name = ?, last_name = ?, department_id = ?, tel_numdoc = ? WHERE doctor_id = ?',
-      [first_name, last_name, department_id || null, phone || null, id]
+      'UPDATE doctor SET first_name = ?, last_name = ?, department_id = ? WHERE doctor_id = ?',
+      [
+        first_name, 
+        last_name, 
+        department_id || null, 
+        id
+      ]
     );
 
     if (result.affectedRows === 0) {
-      return NextResponse.json({ error: "ไม่พบรหัสแพทย์นี้" }, { status: 404 });
+      return NextResponse.json({ error: "ไม่พบรหัสแพทย์" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "อัปเดตข้อมูลสำเร็จ" });
+    return NextResponse.json({ message: "สำเร็จ" });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "เซิร์ฟเวอร์ขัดข้อง" }, { status: 500 });
+    return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }
