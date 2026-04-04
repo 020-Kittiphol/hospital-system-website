@@ -141,7 +141,7 @@ export default function DepartmentsPage() {
                                 <table className="dept-table">
                                     <thead>
                                         <tr>
-                                            <th>รหัสแผนก</th> {/* เพิ่มหัวข้อรหัสแผนก */}
+                                            <th>รหัสแผนก</th>
                                             <th>วันนัด</th>
                                             <th>ชื่อแผนก</th>
                                             <th style={{ textAlign: 'center' }}>จัดการ</th>
