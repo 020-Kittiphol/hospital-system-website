@@ -3,89 +3,112 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// 🌟 Import เครื่องมือสร้างกราฟจาก Chart.js
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
+import { Pie, Bar, Doughnut } from 'react-chartjs-2';
 
-// 🌟 ลงทะเบียน Component ของกราฟ
+// 🌟 ลงทะเบียน Component ของกราฟ (เพิ่ม Doughnut เข้ามาด้วย)
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
 export default function ChartsPage() {
     const router = useRouter();
+    
+    // 🌟 สร้าง State มารับข้อมูลให้ครบทุกตาราง
     const [patients, setPatients] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [appointments, setAppointments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // 🌟 ดึงข้อมูลจาก API เดียวกับหน้าตาราง
     useEffect(() => {
-        const fetchPatients = async () => {
+        // 🌟 ฟังก์ชันดึงข้อมูลแบบปลอดภัย (ถ้า API ไหนยังไม่ทำ จะได้ไม่พัง)
+        const safeFetch = async (url) => {
             try {
-                const response = await fetch('/api/users');
-                if (response.ok) {
-                    const data = await response.json();
-                    setPatients(data);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setIsLoading(false);
+                const res = await fetch(url);
+                return res.ok ? await res.json() : [];
+            } catch {
+                return [];
             }
         };
-        fetchPatients();
+
+        const fetchAllData = async () => {
+            // ดึงข้อมูล 4 เส้นพร้อมกันเพื่อความรวดเร็ว!
+            const [patData, docData, deptData, appData] = await Promise.all([
+                safeFetch('/api/users'),          // คนไข้
+                safeFetch('/api/doctors'),        // หมอ
+                safeFetch('/api/departments'),    // แผนก
+                safeFetch('/api/appointment'),    // นัดหมาย (ถ้าเจมตั้งชื่อไฟล์ api/appointments ให้เติม s ด้วยนะครับ)
+            ]);
+
+            setPatients(patData);
+            setDoctors(docData);
+            setDepartments(deptData);
+            setAppointments(appData);
+            setIsLoading(false);
+        };
+
+        fetchAllData();
     }, []);
 
-    // 🌟 คำนวณข้อมูลสถิติ
+    // ==========================================
+    // 📊 คำนวณข้อมูลสำหรับกล่องสรุปตัวเลข (Summary)
+    // ==========================================
     const totalPatients = patients.length;
-    const avgAge = totalPatients > 0 
-        ? Math.round(patients.reduce((sum, p) => sum + (parseInt(p.age) || 0), 0) / totalPatients) 
-        : 0;
-    
-    const maleCount = patients.filter(p => p.gender === 'ชาย').length;
-    const femaleCount = patients.filter(p => p.gender === 'หญิง').length;
+    const totalDoctors = doctors.length;
+    const totalDepartments = departments.length;
+    const totalAppointments = appointments.length;
 
-    // 🌟 เตรียมข้อมูลกราฟวงกลม (เพศ)
+    const avgAge = totalPatients > 0 
+        ? Math.round(patients.reduce((sum, p) => sum + (parseInt(p.age) || 0), 0) / totalPatients) : 0;
+
+    // ==========================================
+    // 📊 เตรียมข้อมูลสำหรับกราฟ (Charts)
+    // ==========================================
+    
+    // 1. กราฟวงกลม: สัดส่วนเพศคนไข้
     const genderData = {
         labels: ['ชาย', 'หญิง'],
         datasets: [{
-            data: [maleCount, femaleCount],
-            backgroundColor: ['#3498db', '#e74c3c'], // สีฟ้าและสีแดง
-            hoverBackgroundColor: ['#2980b9', '#c0392b'],
+            data: [
+                patients.filter(p => p.gender === 'ชาย').length, 
+                patients.filter(p => p.gender === 'หญิง').length
+            ],
+            backgroundColor: ['#3498db', '#e74c3c'],
             borderWidth: 0,
         }]
     };
 
-    // 🌟 เตรียมข้อมูลกราฟแท่ง (อายุ)
+    // 2. กราฟแท่ง: อายุคนไข้
     const ageData = {
-        labels: patients.map(p => p.first_name), // ชื่อคนไข้แกน X
+        labels: patients.map(p => p.first_name || `ID:${p.user_id}`),
         datasets: [{
             label: 'อายุ (ปี)',
-            data: patients.map(p => parseInt(p.age) || 0), // อายุแกน Y
+            data: patients.map(p => parseInt(p.age) || 0),
             backgroundColor: '#3e9d8a',
             borderRadius: 5,
+        }]
+    };
+
+    // 3. กราฟโดนัท (Doughnut): จำนวนการนัดหมายแยกตามรหัสหมอ
+    // (นับว่าหมอ ID ไหน โดนจองคิวไปกี่ครั้ง)
+    const appByDoctor = appointments.reduce((acc, curr) => {
+        const docId = curr.doctor_id || 'ไม่ระบุ';
+        acc[docId] = (acc[docId] || 0) + 1;
+        return acc;
+    }, {});
+
+    const appointmentData = {
+        labels: Object.keys(appByDoctor).map(id => id !== 'ไม่ระบุ' ? `หมอ ID: ${id}` : 'ไม่ระบุ'),
+        datasets: [{
+            data: Object.values(appByDoctor),
+            backgroundColor: ['#f1c40f', '#e67e22', '#e74c3c', '#9b59b6', '#34495e'],
+            borderWidth: 0,
         }]
     };
 
     return (
         <>
             <style>{`
-                .modern-wrapper { display: flex; flex-direction: column; min-height: 100vh; background-color: #f4f8f7; font-family: 'Sarabun', sans-serif; margin: 0; }
-                .modern-header { background: #3e9d8a; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 10; }
-                .modern-body { display: flex; flex: 1; }
-                .modern-sidebar { width: 260px; background-color: #3e9d8a; flex-shrink: 0; box-shadow: 2px 0 10px rgba(0,0,0,0.05); z-index: 5; }
-                .modern-sidebar a { display: block; padding: 16px 25px; color: rgba(255,255,255,0.85); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; font-size: 16px; }
-                .modern-sidebar a:hover, .modern-sidebar a.active { background-color: white; color: #3e9d8a; font-weight: bold; border-left: 5px solid #f39c12; }
                 
-                .modern-content { flex: 1; padding: 40px; overflow-y: auto; width: 100%; }
-                
-                .btn-signout { padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; color: #333; font-weight: bold; }
-                
-                /* สไตล์กล่องสรุปข้อมูล */
-                .summary-container { display: flex; gap: 20px; margin-bottom: 30px; }
-                .summary-card { flex: 1; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid #3e9d8a; }
-                .summary-value { font-size: 36px; font-weight: bold; color: #2c7a6b; margin: 10px 0 0 0; }
-                
-                /* สไตล์กล่องกราฟ */
-                .chart-container { display: flex; gap: 20px; flex-wrap: wrap; }
-                .chart-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; }
             `}</style>
 
             <div className="modern-wrapper">
@@ -100,58 +123,80 @@ export default function ChartsPage() {
                         <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
                         <Link href="/departments">ข้อมูลแผนก</Link>
                         <Link href="/doctors">ข้อมูลเเพทย์</Link>
-                        {/* 🌟 หน้า Chart ต้องเป็น Active */}
                         <Link href="/charts" className="active">สรุปข้อมูล chart</Link>
                     </aside>
 
                     <main className="modern-content">
-                        <h2 style={{ color: '#2c7a6b', margin: '0 0 20px 0' }}>แดชบอร์ดสรุปข้อมูลผู้ป่วย</h2>
+                        <h2 style={{ color: '#2c7a6b', margin: '0 0 20px 0' }}>แดชบอร์ดสรุปข้อมูลโรงพยาบาล</h2>
                         
                         {isLoading ? (
-                            <div style={{ textAlign: 'center', marginTop: '50px' }}>กำลังโหลดข้อมูลกราฟ... ⏳</div>
+                            <div style={{ textAlign: 'center', marginTop: '50px' }}>กำลังโหลดข้อมูลทั้งหมด... ⏳</div>
                         ) : (
                             <>
-                                {/* 🌟 แถวที่ 1: กล่องสรุปตัวเลข */}
+                                {/* ========================================== */}
+                                {/* 🌟 กล่องสรุปตัวเลข (4 กล่องเรียงกัน) */}
+                                {/* ========================================== */}
                                 <div className="summary-container">
-                                    <div className="summary-card">
-                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>จำนวนคนไข้ทั้งหมด (คน)</div>
-                                        <div className="summary-value">{totalPatients}</div>
+                                    <div className="summary-card" style={{ borderBottomColor: '#3e9d8a' }}>
+                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>คนไข้ทั้งหมด (คน)</div>
+                                        <div className="summary-value" style={{ color: '#3e9d8a' }}>{totalPatients}</div>
                                     </div>
-                                    <div className="summary-card">
-                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>อายุเฉลี่ยคนไข้ (ปี)</div>
-                                        <div className="summary-value">{avgAge}</div>
+                                    <div className="summary-card" style={{ borderBottomColor: '#2980b9' }}>
+                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>แพทย์ทั้งหมด (คน)</div>
+                                        <div className="summary-value" style={{ color: '#2980b9' }}>{totalDoctors}</div>
+                                    </div>
+                                    <div className="summary-card" style={{ borderBottomColor: '#8e44ad' }}>
+                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>แผนกทั้งหมด (แผนก)</div>
+                                        <div className="summary-value" style={{ color: '#8e44ad' }}>{totalDepartments}</div>
+                                    </div>
+                                    <div className="summary-card" style={{ borderBottomColor: '#e67e22' }}>
+                                        <div style={{ color: '#7f8c8d', fontSize: '16px' }}>คิวนัดหมาย (คิว)</div>
+                                        <div className="summary-value" style={{ color: '#e67e22' }}>{totalAppointments}</div>
                                     </div>
                                 </div>
 
-                                {/* 🌟 แถวที่ 2: กล่องกราฟ */}
+                                {/* ========================================== */}
+                                {/* 🌟 หมวดหมู่: ข้อมูลผู้ป่วย */}
+                                {/* ========================================== */}
+                                <h3 className="section-title">📊 ข้อมูลผู้ป่วย</h3>
                                 <div className="chart-container">
-                                    {/* กล่องซ้าย: กราฟวงกลม */}
                                     <div className="chart-box" style={{ flex: '0.4' }}>
-                                        <h3 style={{ margin: '0 0 20px 0', color: '#333' }}>สัดส่วนเพศ</h3>
-                                        {totalPatients > 0 ? (
-                                            <div style={{ width: '250px' }}>
-                                                <Pie data={genderData} />
-                                            </div>
-                                        ) : (
-                                            <p>ยังไม่มีข้อมูล</p>
-                                        )}
+                                        <h4 style={{ margin: '0 0 20px 0', color: '#333' }}>สัดส่วนเพศ</h4>
+                                        <div style={{ width: '250px' }}>
+                                            <Pie data={genderData} />
+                                        </div>
                                     </div>
-
-                                    {/* กล่องขวา: กราฟแท่ง */}
                                     <div className="chart-box" style={{ flex: '0.6' }}>
-                                        <h3 style={{ margin: '0 0 20px 0', color: '#333' }}>อายุคนไข้แต่ละราย</h3>
-                                        {totalPatients > 0 ? (
-                                            <div style={{ width: '100%', height: '300px' }}>
-                                                <Bar 
-                                                    data={ageData} 
-                                                    options={{ maintainAspectRatio: false }}
-                                                />
-                                            </div>
-                                        ) : (
-                                            <p>ยังไม่มีข้อมูล</p>
-                                        )}
+                                        <h4 style={{ margin: '0 0 20px 0', color: '#333' }}>อายุคนไข้แต่ละราย</h4>
+                                        <div style={{ width: '100%', height: '280px' }}>
+                                            <Bar data={ageData} options={{ maintainAspectRatio: false }} />
+                                        </div>
                                     </div>
                                 </div>
+
+                                {/* ========================================== */}
+                                {/* 🌟 หมวดหมู่: การทำงานของแพทย์และนัดหมาย */}
+                                {/* ========================================== */}
+                                <h3 className="section-title">🏥 ข้อมูลนัดหมายแพทย์</h3>
+                                <div className="chart-container">
+                                    <div className="chart-box" style={{ flex: '1' }}>
+                                        <h4 style={{ margin: '0 0 20px 0', color: '#333' }}>จำนวนคิวนัดหมาย แยกตาม ID แพทย์</h4>
+                                        <div style={{ width: '300px', margin: '0 auto' }}>
+                                            {totalAppointments > 0 ? (
+                                                <Doughnut data={appointmentData} />
+                                            ) : (
+                                                <p style={{ textAlign: 'center', color: '#999' }}>ยังไม่มีข้อมูลการนัดหมาย</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* พื้นที่ว่างเผื่อใส่กราฟแผนกในอนาคต */}
+                                    <div className="chart-box" style={{ flex: '1', justifyContent: 'center', backgroundColor: '#fafafa', border: '1px dashed #ccc', boxShadow: 'none' }}>
+                                        <p style={{ color: '#999' }}>เตรียมพื้นที่สำหรับกราฟแผนกในอนาคต</p>
+                                    </div>
+                                </div>
+                                
+                                {/* เว้นที่ด้านล่างนิดนึงให้เลื่อนลงมาสุดแล้วดูสวยงาม */}
+                                <div style={{ height: '40px' }}></div>
                             </>
                         )}
                     </main>
