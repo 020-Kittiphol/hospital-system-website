@@ -88,10 +88,7 @@ export default function AddDoctorPage() {
                                     <input type="text" name="department_id" className="form-input" placeholder="เช่น D001" required />
                                 </div>
 
-                                <div className="form-group" style={{ marginBottom: '30px' }}>
-                                    <label className="form-label">เบอร์โทร</label>
-                                    <input type="text" name="phone" className="form-input" placeholder="08X-XXX-XXXX" required />
-                                </div>
+                               
 
                                 <button type="submit" className="btn-modern btn-green">บันทึกข้อมูลหมอ</button>
                             </form>

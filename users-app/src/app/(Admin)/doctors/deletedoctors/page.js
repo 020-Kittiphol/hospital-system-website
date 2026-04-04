@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-// 🚨 เปลี่ยนวิธีดึง CSS เป็นแบบ Module
+
 import styles from './style.module.css'; 
 
 export default function DeleteDoctorPage() {
@@ -29,7 +29,7 @@ export default function DeleteDoctorPage() {
   };
 
   return (
-    // 🚨 สังเกตตรง className={styles....} จะไม่มีเครื่องหมายคำพูด (") แล้ว
+   
     <div className={styles.container}>
       <h1 className={styles.title}>ลบข้อมูลหมอ</h1>
       <form onSubmit={handleDelete} className={styles.form}>

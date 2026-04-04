@@ -84,7 +84,7 @@ export default function DoctorsPage() {
                                             <th>รหัสแพทย์ (ID)</th>
                                             <th>ชื่อหมอ</th>
                                             <th>รหัสเเผนก</th>
-                                            <th>เบอร์โทร</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>

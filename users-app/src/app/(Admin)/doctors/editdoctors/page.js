@@ -44,7 +44,7 @@ export default function EditDoctorPage() {
       </header>
 
       <div className={styles.mainContent}>
-        {/* Sidebar */}
+        {}
         <aside className={styles.sidebar}>
           <div className={styles.sidebarItem}>แก้ไขข้อมูลแพทย์</div>
         </aside>
@@ -70,11 +70,7 @@ export default function EditDoctorPage() {
                 <input type="text" className={styles.input} value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} />
               </div>
 
-              <div className={styles.formGroup}>
-                <label className={styles.label}>เบอร์โทรศัพท์:</label>
-                <input type="text" className={styles.input} value={phone} onChange={(e) => setPhone(e.target.value)} />
-              </div>
-
+              
               <div className={styles.buttonGroup}>
                 <button type="submit" className={styles.btnSubmit}>ตกลง</button>
                 <button type="button" className={styles.btnCancel} onClick={() => window.history.back()}>ยกเลิก</button>

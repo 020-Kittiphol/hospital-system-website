@@ -53,11 +53,8 @@ export default function EditDoctorPage() {
                             </div>
                             <br />
 
-                            <div className="form-group">
-                                <label>เบอร์โทร:</label>
-                                <input type="number" name="Phone" className="form-control" />
-                            </div>
-                            <br />
+                           
+                           
 
                             <button 
                                 type="submit" 
