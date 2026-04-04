@@ -39,6 +39,11 @@ export default function HomePage() {
                         <Link href="/users" className="home-card">
                             ข้อมูลผู้ใช้
                         </Link>
+
+                        <Link href="/charts" className="home-card">
+                        สรุปข้อมูล chart
+                        </Link>
+                        
                     </div>
                 </div>
 

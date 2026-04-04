@@ -15,5 +15,5 @@ export async function POST(req) {
         [department_id, department_name]
     );
 
-    return NextResponse.json({ message: "เพิ่มสำเร็จ" });
+    return NextResponse.json({ message: "เพิ่มสำเร็จ" })
 }
