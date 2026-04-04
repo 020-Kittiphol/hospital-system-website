@@ -8,7 +8,6 @@ import './bbb-2.css';
 export default function DepartmentsPage() {
     const router = useRouter();
 
-    // --- 1. States สำหรับจัดการข้อมูล ---
     const [departments, setDepartments] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId, setEditId] = useState(null); // เก็บ ID เมื่อเข้าโหมดแก้ไข
@@ -18,17 +17,14 @@ export default function DepartmentsPage() {
         name: '' 
     });
 
-    // URL ของ API (ต้องมี s ตามชื่อโฟลเดอร์ของคุณ)
     const apiUrl = '/api/departments';
 
-    // --- 2. ฟังก์ชันดึงข้อมูล (GET) ---
     const fetchDepartments = async () => {
         try {
             const res = await fetch(apiUrl);
             if (!res.ok) throw new Error('เรียกข้อมูลไม่สำเร็จ');
             const data = await res.json();
             
-            // Map ข้อมูลให้ตรงกับชื่อตัวแปรที่ใช้ในตาราง
             const formattedData = data.map(item => ({
                 id: item.department_id,
                 id_code: item.department_id_code || item.department_id,
@@ -45,7 +41,6 @@ export default function DepartmentsPage() {
         fetchDepartments();
     }, []);
 
-    // --- 3. ฟังก์ชันบันทึกข้อมูล (POST สำหรับเพิ่ม / PUT สำหรับแก้ไข) ---
     const saveData = async () => {
         if (!formData.name || !formData.date) {
             alert("กรุณากรอกชื่อแผนกและวันนัดให้ครบถ้วน");
@@ -59,7 +54,6 @@ export default function DepartmentsPage() {
         };
 
         try {
-            // ส่ง ID ผ่าน Query String (?id=...) เมื่อเป็นการแก้ไข
             const method = editId ? 'PUT' : 'POST';
             const url = editId ? `${apiUrl}?id=${editId}` : apiUrl;
 
@@ -71,8 +65,8 @@ export default function DepartmentsPage() {
 
             if (response.ok) {
                 alert(editId ? "แก้ไขข้อมูลสำเร็จ ✅" : "บันทึกข้อมูลสำเร็จ ✅");
-                fetchDepartments(); // ดึงข้อมูลใหม่มาโชว์ในตาราง
-                closeModal();       // ปิด Modal และเคลียร์ค่าในฟอร์ม
+                fetchDepartments();
+                closeModal();
             } else {
                 const err = await response.json();
                 alert("เกิดข้อผิดพลาด: " + (err.error || "บันทึกไม่สำเร็จ"));
@@ -82,11 +76,9 @@ export default function DepartmentsPage() {
         }
     };
 
-    // --- 4. ฟังก์ชันลบข้อมูล (DELETE) ---
     const handleDelete = async (id) => {
         if (confirm("คุณแน่ใจหรือไม่ที่จะลบแผนกนี้?")) {
             try {
-                // ส่ง ID ผ่าน Query String (?id=...)
                 const response = await fetch(`${apiUrl}?id=${id}`, { 
                     method: 'DELETE' 
                 });
@@ -103,7 +95,6 @@ export default function DepartmentsPage() {
         }
     };
 
-    // --- 5. จัดการ Modal และการเตรียมข้อมูลแก้ไข ---
     const openModal = () => setIsModalOpen(true);
 
     const closeModal = () => {
@@ -114,7 +105,6 @@ export default function DepartmentsPage() {
 
     const handleEdit = (dept) => {
         setEditId(dept.id);
-        // แปลงรูปแบบวันที่เพื่อให้ input type="datetime-local" แสดงผลได้
         const dateFormatted = dept.date ? new Date(dept.date).toISOString().slice(0, 16) : '';
         setFormData({ 
             id_code: dept.id_code, 
@@ -201,7 +191,6 @@ export default function DepartmentsPage() {
                 </main>
             </div>
 
-            {/* --- Modal Popup --- */}
             {isModalOpen && (
                 <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
                     <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '380px' }}>

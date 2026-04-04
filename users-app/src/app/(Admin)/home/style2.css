@@ -1,103 +1,103 @@
  .home-wrapper {
-                    min-height: 100vh;
-                    background-color: #e8f0ed;
-                    font-family: 'Sarabun', 'Segoe UI', sans-serif;
-                    margin: 0;
-                    display: flex;
-                    flex-direction: column;
-                }
+    min-height: 100vh;
+    background-color: #e8f0ed;
+    font-family: 'Sarabun', 'Segoe UI', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
                 
-                .home-signout {
-                    position: absolute;
-                    top: 20px;
-                    right: 30px;
-                    z-index: 100;
-                    padding: 8px 25px;
-                    background-color: #009688;
-                    color: white;
-                    border: none;
-                    border-radius: 25px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-                    transition: 0.3s;
-                }
-                .home-signout:hover {
-                    background-color: #00796b;
-                    transform: scale(1.05);
-                }
+.home-signout {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 100;
+    padding: 8px 25px;
+    background-color: #009688;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.home-signout:hover {
+    background-color: #00796b;
+    transform: scale(1.05);
+}
 
-                .home-hero {
-                    position: relative;
-                    height: 350px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-image: url('/home_back.jpg');
-                    background-size: cover;
-                    background-position: center;
-                }
+.home-hero {
+    position: relative;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/home_back.jpg');
+    background-size: cover;
+    background-position: center;
+}
                 
-                .home-hero-overlay {
-                    position: absolute;
-                    inset: 0;
-                    background: rgba(255, 255, 255, 0.7);
-                    backdrop-filter: blur(5px);
-                }
+.home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+}
 
-                .home-hero h1 {
-                    position: relative;
-                    z-index: 2;
-                    font-size: 65px;
-                    letter-spacing: 8px;
-                    color: #004d40;
-                    margin: 0;
-                    font-weight: bold;
-                }
+.home-hero h1 {
+    position: relative;
+    z-index: 2;
+    font-size: 65px;
+    letter-spacing: 8px;
+    color: #004d40;
+    margin: 0;
+    font-weight: bold;
+}
 
-                .home-content {
-                    flex: 1;
-                    padding: 40px 20px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
+.home-content {
+    flex: 1;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-                .home-title {
-                    color: #555;
-                    font-size: 20px;
-                    margin-bottom: 30px;
-                    font-weight: bold;
-                }
+.home-title {
+    color: #555;
+    font-size: 20px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
 
-                .home-cards-container {
-                    display: flex;
-                    justify-content: center;
-                    gap: 30px;
-                    flex-wrap: wrap;
-                    max-width: 1200px;
-                    align-items: flex-start; 
-                }
+.home-cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    align-items: flex-start; 
+}
 
-                .home-card {
-                    width: 240px;
-                    height: 140px;
-                    background: white;
-                    border-radius: 15px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    text-decoration: none;
-                    color: #333;
-                    font-size: 20px;
-                    font-weight: bold;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-                    transition: all 0.3s ease;
-                }
+.home-card {
+    width: 240px;
+    height: 140px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
 
-                .home-card:hover {
-                    transform: translateY(-10px) scale(1.02);
-                    background: linear-gradient(135deg, #009688, #26a69a);
-                    color: white;
-                    box-shadow: 0 15px 35px rgba(0,150,136,0.3);
-                }
+.home-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    background: linear-gradient(135deg, #009688, #26a69a);
+    color: white;
+    box-shadow: 0 15px 35px rgba(0,150,136,0.3);
+}

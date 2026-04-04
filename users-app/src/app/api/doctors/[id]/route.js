@@ -10,7 +10,6 @@ export async function DELETE(request, context) {
 
     console.log("ID ที่จะลบ:", id); 
 
-   
     const [result] = await pool.query(
       'DELETE FROM doctor WHERE doctor_id = ?', 
       [id]
@@ -28,19 +27,17 @@ export async function DELETE(request, context) {
   }
 }
 
-
 export async function PUT(request, context) {
   try {
     const params = await context.params;
     const id = params.id;
     const body = await request.json();
-    const { doctor_name, department_id } = body; // ไม่รับ phone แล้ว
+    const { doctor_name, department_id } = body;
 
     const nameParts = doctor_name.trim().split(" ");
     const first_name = nameParts[0];
     const last_name = nameParts.slice(1).join(" ") || "";
 
-    // ตัด tel_num = ? ออกจากคำสั่ง SQL
     const [result] = await pool.query(
       'UPDATE doctor SET first_name = ?, last_name = ?, department_id = ? WHERE doctor_id = ?',
       [

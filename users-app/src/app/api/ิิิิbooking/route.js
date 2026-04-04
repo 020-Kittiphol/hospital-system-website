@@ -3,9 +3,8 @@ const pool = require('@/app/models/db_pool');
 
 export async function GET() {
     try {
-        const [department] = await pool.query('SELECT * FROM department');
-        
-        const [doctor] = await pool.query('SELECT * FROM doctor');
+        const [departments] = await pool.query('SELECT * FROM department');
+        const [doctors] = await pool.query('SELECT * FROM doctor');
 
         return NextResponse.json({ departments, doctors }, { status: 200 });
 

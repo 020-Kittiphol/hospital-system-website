@@ -1,4 +1,3 @@
-/* Container หลัก */
 .container {
   max-width: 600px;
   margin: 50px auto;
@@ -9,7 +8,6 @@
   font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* หัวข้อฟอร์ม */
 .title {
   text-align: center;
   color: #333;
@@ -18,7 +16,6 @@
   font-weight: 600;
 }
 
-/* กลุ่ม Input */
 .formGroup {
   margin-bottom: 20px;
 }
@@ -30,7 +27,6 @@
   font-weight: 500;
 }
 
-/* สไตล์ช่องกรอกข้อมูล */
 .input {
   width: 100%;
   padding: 12px 15px;
@@ -38,23 +34,21 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
-  box-sizing: border-box; /* สำคัญมากเพื่อให้ padding ไม่ดันความกว้าง */
+  box-sizing: border-box;
 }
 
 .input:focus {
   outline: none;
-  border-color: #348877; /* สีเขียวตามธีมเดิมของคุณ */
+  border-color: #348877;
   box-shadow: 0 0 0 3px rgba(52, 136, 119, 0.1);
 }
 
-/* กลุ่มปุ่มกด */
 .buttonGroup {
   display: flex;
   gap: 15px;
   margin-top: 30px;
 }
 
-/* ปุ่มตกลง/เพิ่มข้อมูล */
 .btnSubmit {
   flex: 2;
   padding: 12px;
@@ -72,7 +66,6 @@
   background-color: #2a6d5f;
 }
 
-/* ปุ่มยกเลิก */
 .btnCancel {
   flex: 1;
   padding: 12px;
@@ -91,7 +84,6 @@
   color: #333;
 }
 
-/* ปรับแต่ง Responsive สำหรับมือถือ */
 @media (max-width: 480px) {
   .container {
     margin: 20px;
