@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  background-color: #439a86; /* สีเขียวตามรูปตัวอย่าง */
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #439a86; /* สีเขียว sidebar */
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 0;
+}
+
+.sidebarItem {
+  padding: 12px 25px;
+  color: white;
+  cursor: pointer;
+  background-color: rgba(255,255,255,0.1);
+  border-left: 4px solid #ff9800; /* เส้นสีส้มหน้าเมนู */
+}
+
+.formArea {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+}
+
+.card {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.formTitle {
+  text-align: center;
+  color: #439a86;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fafafa;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.btnSubmit {
+  flex: 1;
+  background-color: #439a86;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btnCancel {
+  flex: 1;
+  background-color: #f44336; /* ปุ่มยกเลิกสีแดง */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.signOutBtn {
+  background: white;
+  color: #439a86;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}

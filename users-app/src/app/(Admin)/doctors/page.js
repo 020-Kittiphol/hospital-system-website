@@ -73,6 +73,7 @@ export default function DoctorsPage() {
                                 <div className="action-bar">
                                     <Link href="/doctors/adddoctors" className="btn-modern btn-green">+ เพิ่มข้อมูล</Link>
                                     <Link href="/doctors/deletedoctors" className="btn-modern btn-red">- ลบข้อมูล</Link>
+                                    <Link href="/doctors/editdoctors" className="btn-modern btn-red">เเก้ไขข้อมูล</Link>
                                 </div>
                             </div>
 

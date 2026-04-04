@@ -1,96 +1,65 @@
-import { NextResponse } from 'next/server';
-const pool = require('../../../models/db_pool');
+import { NextResponse } from "next/server";
+// อย่าลืม import pool เข้ามาด้วยนะครับ ถ้ายังไม่มี (ไม่งั้นจะขึ้น Error: pool is not defined)
+import pool from "../../../models/db_pool"; // (เปลี่ยน path ให้ตรงกับไฟล์ตั้งค่า Database ของคุณ)
 
-export const dynamic = 'force-dynamic';
+export async function DELETE(request, context) {
+  try {
+    // 1. 🚨 จุดสำคัญที่ต้องแก้: ต้องใส่ await ก่อนเรียกใช้ context.params
+    const params = await context.params;
+    const id = params.id;
 
-export async function DELETE(request, { params }) {
-    try {
-        const id = params.id;
+    console.log("ID ที่จะลบ:", id); // เอาไว้เช็คใน Terminal
 
-        const [result] = await pool.query('DELETE FROM doctors WHERE id = ?', [id]);
+    // 2. โค้ดสำหรับลบข้อมูลใน Database ของคุณ
+    const [result] = await pool.query(
+      'DELETE FROM doctor WHERE doctor_id = ?', 
+      [id]
+    );
 
-        if (result.affectedRows === 0) {
-            return NextResponse.json({ error: "ไม่พบข้อมูลแพทย์ที่ต้องการลบ" }, { status: 404 });
-        }
-
-        return NextResponse.json({ message: "ลบข้อมูลแพทย์สำเร็จ" });
-        
-    } catch (error) {
-        console.error("Database Error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    if (result.affectedRows === 0) {
+      return NextResponse.json({ error: "ไม่พบข้อมูลหมอที่จะลบ" }, { status: 404 });
     }
+
+    return NextResponse.json({ message: "ลบสำเร็จ" });
+
+  } catch (error) {
+    console.error("Error:", error);
+    return NextResponse.json({ error: "เกิดข้อผิดพลาดจากเซิร์ฟเวอร์" }, { status: 500 });
+  }
 }
 
-export default function DoctorsPage() {
-    const [doctors, setDoctors] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+// ... (โค้ด DELETE เดิมของคุณอยู่ด้านบน) ...
 
-    const fetchDoctors = async () => {
-        try {
-            const response = await fetch('/api/doctors');
-            const data = await response.json();
-            setDoctors(data);
-        } catch (error) {
-            console.error("ดึงข้อมูลไม่สำเร็จ", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+// ... (ฟังก์ชัน DELETE ของคุณยังอยู่เหมือนเดิมด้านบนนะครับ) ...
 
-    useEffect(() => {
-        fetchDoctors();
-    }, []);
+export async function PUT(request, context) {
+  try {
+    const params = await context.params;
+    const id = params.id;
+    const { doctor_name, department_id, phone } = await request.json();
 
-    const handleDelete = async (id, name) => {
-        const isConfirm = window.confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลของ "นพ./พญ. ${name}"?`);
-        
-        if (isConfirm) {
-            try {
-                const response = await fetch(`/api/doctors/${id}`, {
-                    method: 'DELETE',
-                });
+    if (!doctor_name) {
+      return NextResponse.json({ error: "กรุณาระบุชื่อแพทย์" }, { status: 400 });
+    }
 
-                if (response.ok) {
-                    alert("ลบข้อมูลสำเร็จแล้ว ✅");
-                    fetchDoctors();
-                } else {
-                    alert("เกิดข้อผิดพลาดในการลบข้อมูล");
-                }
-            } catch (error) {
-                console.error("Delete Error:", error);
-                alert("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้");
-            }
-        }
-    };
+    // แยกชื่อและนามสกุลจาก doctor_name ที่ส่งมา
+    const nameParts = doctor_name.trim().split(" ");
+    const first_name = nameParts[0];
+    const last_name = nameParts.slice(1).join(" ") || "";
 
-    return (
-        <table className="beautiful-table">
-            <thead>
-                <tr>
-                    <th>ชื่อหมอ</th>
-                    <th>รหัสเเผนก</th>
-                    <th>เบอร์โทร</th>
-                    <th>จัดการ</th>
-                </tr>
-            </thead>
-            <tbody>
-                {!isLoading && doctors.map((doc) => (
-                    <tr key={doc.id}>
-                        <td>{doc.first_name} {doc.last_name}</td>
-                        <td>{doc.department_id}</td>
-                        <td>{doc.phone}</td>
-                        <td>
-                            <button 
-                                onClick={() => handleDelete(doc.id, doc.first_name)}
-                                className="btn-modern btn-red"
-                                style={{ padding: '5px 12px', fontSize: '12px' }}
-                            >
-                                ลบ
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+    // SQL Update ให้ตรงกับคอลัมน์ใน DB ของคุณ
+    const [result] = await pool.query(
+      'UPDATE doctor SET first_name = ?, last_name = ?, department_id = ?, tel_numdoc = ? WHERE doctor_id = ?',
+      [first_name, last_name, department_id || null, phone || null, id]
     );
+
+    if (result.affectedRows === 0) {
+      return NextResponse.json({ error: "ไม่พบรหัสแพทย์นี้" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "อัปเดตข้อมูลสำเร็จ" });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "เซิร์ฟเวอร์ขัดข้อง" }, { status: 500 });
+  }
 }
