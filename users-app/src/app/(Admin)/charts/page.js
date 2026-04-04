@@ -1,4 +1,6 @@
 "use client";
+
+import './style.css';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -107,10 +109,6 @@ export default function ChartsPage() {
 
     return (
         <>
-            <style>{`
-                
-            `}</style>
-
             <div className="modern-wrapper">
                 <header className="modern-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>

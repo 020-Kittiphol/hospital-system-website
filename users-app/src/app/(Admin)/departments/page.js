@@ -142,6 +142,7 @@ export default function DepartmentsPage() {
                     <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
                     <Link href="/departments" className="active">ข้อมูลแผนก</Link>
                     <Link href="/doctors">ข้อมูลแพทย์</Link>
+                    <Link href="/charts">สรุปข้อมูล chart</Link>
                 </aside>
 
                 <main className="dept-content">
