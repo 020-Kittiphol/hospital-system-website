@@ -8,38 +8,47 @@ import './bbb-2.css';
 export default function DepartmentsPage() {
     const router = useRouter();
 
+    // --- 1. States สำหรับจัดการข้อมูล ---
+    const [departments, setDepartments] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [departments, setDepartments] = useState([]); 
-    const [formData, setFormData] = useState({ id_code: '', date: '', name: '' });
-    const [editId, setEditId] = useState(null); 
+    const [editId, setEditId] = useState(null); // เก็บ ID เมื่อต้องการแก้ไข
+    const [formData, setFormData] = useState({ 
+        id_code: '', 
+        date: '', 
+        name: '' 
+    });
 
-    // ใช้ชื่อ API ให้ตรงกับโฟลเดอร์ที่มีตัว s
+    // URL ของ API (ต้องมีตัว s ตามชื่อโฟลเดอร์ของคุณ)
     const apiUrl = '/api/departments';
 
-    // 1. ดึงข้อมูล
+    // --- 2. ฟังก์ชันดึงข้อมูลจาก Database (GET) ---
     const fetchDepartments = async () => {
         try {
             const res = await fetch(apiUrl);
-            if (res.ok) {
-                const data = await res.json();
-                setDepartments(data.map(item => ({
-                    id: item.department_id,
-                    id_code: item.department_id_code || item.department_id,
-                    name: item.department_name,
-                    date: item.department_date
-                })));
-            }
+            if (!res.ok) throw new Error('ไม่สามารถดึงข้อมูลได้');
+            const data = await res.json();
+            
+            // Map ข้อมูลให้ตรงกับชื่อตัวแปรที่จะใช้ในตาราง
+            const formattedData = data.map(item => ({
+                id: item.department_id,
+                id_code: item.department_id_code || item.department_id,
+                name: item.department_name,
+                date: item.department_date
+            }));
+            setDepartments(formattedData);
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error("Fetch Error:", error);
         }
     };
 
-    useEffect(() => { fetchDepartments(); }, []);
+    useEffect(() => {
+        fetchDepartments();
+    }, []);
 
-    // 2. บันทึกข้อมูล (เพิ่ม/แก้ไข)
+    // --- 3. ฟังก์ชันบันทึกข้อมูล (POST สำหรับเพิ่ม / PUT สำหรับแก้ไข) ---
     const saveData = async () => {
         if (!formData.name || !formData.date) {
-            alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+            alert("กรุณากรอกข้อมูลให้ครบถ้วน (ชื่อแผนกและวันนัด)");
             return;
         }
 
@@ -50,6 +59,7 @@ export default function DepartmentsPage() {
         };
 
         try {
+            // ตัดสินใจเลือก Method และ URL (ถ้าแก้ไขจะส่ง ?id=... ไปด้วย)
             const method = editId ? 'PUT' : 'POST';
             const url = editId ? `${apiUrl}?id=${editId}` : apiUrl;
 
@@ -60,39 +70,40 @@ export default function DepartmentsPage() {
             });
 
             if (response.ok) {
-                alert(editId ? "แก้ไขสำเร็จ ✅" : "บันทึกสำเร็จ ✅");
-                fetchDepartments();
-                closeModal();
+                alert(editId ? "แก้ไขข้อมูลสำเร็จ ✅" : "บันทึกข้อมูลสำเร็จ ✅");
+                fetchDepartments(); // โหลดข้อมูลในตารางใหม่
+                closeModal();       // ปิด Modal และเคลียร์ค่า
             } else {
-                const errorData = await response.json();
-                alert("เกิดข้อผิดพลาด: " + errorData.error);
+                const err = await response.json();
+                alert("เกิดข้อผิดพลาด: " + (err.error || "บันทึกไม่สำเร็จ"));
             }
         } catch (error) {
-            alert("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ (เช็ค XAMPP หรือชื่อไฟล์ API)");
+            alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
         }
     };
 
-    // 3. ลบข้อมูล
+    // --- 4. ฟังก์ชันสำหรับปุ่มลบ (DELETE) ---
     const handleDelete = async (id) => {
-        if (confirm("คุณแน่ใจหรือไม่ที่จะลบข้อมูลนี้?")) {
+        if (confirm("คุณแน่ใจหรือไม่ที่จะลบแผนกนี้?")) {
             try {
-                const response = await fetch(`${apiUrl}?id=${id}`, { method: 'DELETE' });
+                const response = await fetch(`${apiUrl}?id=${id}`, { 
+                    method: 'DELETE' 
+                });
+
                 if (response.ok) {
-                    alert("ลบสำเร็จ ✅");
+                    alert("ลบข้อมูลเรียบร้อย ✅");
                     fetchDepartments(); 
+                } else {
+                    alert("ลบข้อมูลไม่สำเร็จ");
                 }
             } catch (error) {
-                console.error("Delete error:", error);
+                console.error("Delete Error:", error);
             }
         }
     };
 
-    const handleEdit = (dept) => {
-        setEditId(dept.id);
-        const dateFormatted = dept.date ? new Date(dept.date).toISOString().slice(0, 16) : '';
-        setFormData({ id_code: dept.id_code, date: dateFormatted, name: dept.name });
-        setIsModalOpen(true);
-    };
+    // --- 5. จัดการการเปิด-ปิด Modal และการแก้ไข ---
+    const openModal = () => setIsModalOpen(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -100,11 +111,29 @@ export default function DepartmentsPage() {
         setFormData({ id_code: '', date: '', name: '' });
     };
 
+    const handleEdit = (dept) => {
+        setEditId(dept.id);
+        // แปลงรูปแบบวันที่จาก Database (ISO) ให้เป็น format ที่ input datetime-local รับได้
+        const dateFormatted = dept.date ? new Date(dept.date).toISOString().slice(0, 16) : '';
+        setFormData({ 
+            id_code: dept.id_code, 
+            name: dept.name, 
+            date: dateFormatted 
+        });
+        openModal();
+    };
+
     return (
         <div className="dept-page-container">
             <header className="dept-header">
-                <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
-                <button onClick={() => router.push('/signin')}>Sign out</button>
+                <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
+                <button 
+                    onClick={() => router.push('/signin')}
+                    className="signout-btn"
+                    style={{ padding: '8px 20px', backgroundColor: 'white', color: '#3e9d8a', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                    Sign out
+                </button>
             </header>
 
             <div className="dept-body">
@@ -117,9 +146,9 @@ export default function DepartmentsPage() {
 
                 <main className="dept-content">
                     <div className="dept-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '25px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
                             <h2 style={{ color: '#3e9d8a', margin: 0 }}>ข้อมูลแผนก</h2>
-                            <button className="dept-btn" style={{ backgroundColor: '#4Caf50' }} onClick={() => setIsModalOpen(true)}>
+                            <button className="dept-btn" style={{ backgroundColor: '#4Caf50' }} onClick={openModal}>
                                 + เพิ่มข้อมูลแผนก
                             </button>
                         </div>
@@ -143,14 +172,30 @@ export default function DepartmentsPage() {
                                                 <td>{dept.name}</td>
                                                 <td style={{ textAlign: 'center' }}>
                                                     <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                                        <button className="dept-btn" style={{ backgroundColor: '#ff9800' }} onClick={() => handleEdit(dept)}>แก้ไข</button>
-                                                        <button className="dept-btn" style={{ backgroundColor: '#f44336' }} onClick={() => handleDelete(dept.id)}>ลบ</button>
+                                                        <button 
+                                                            className="dept-btn" 
+                                                            style={{ backgroundColor: '#ff9800', padding: '6px 12px' }}
+                                                            onClick={() => handleEdit(dept)}
+                                                        >
+                                                            แก้ไข
+                                                        </button>
+                                                        <button 
+                                                            className="dept-btn" 
+                                                            style={{ backgroundColor: '#f44336', padding: '6px 12px' }}
+                                                            onClick={() => handleDelete(dept.id)}
+                                                        >
+                                                            ลบ
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
-                                        <tr><td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>ไม่มีข้อมูล...</td></tr>
+                                        <tr>
+                                            <td colSpan="4" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+                                                ไม่พบข้อมูลแผนก หรือกำลังโหลด...
+                                            </td>
+                                        </tr>
                                     )}
                                 </tbody>
                             </table>
@@ -159,19 +204,47 @@ export default function DepartmentsPage() {
                 </main>
             </div>
 
+            {/* --- Modal Popup --- */}
             {isModalOpen && (
                 <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '100%', maxWidth: '350px' }}>
-                        <h3>{editId ? "แก้ไขแผนก" : "เพิ่มแผนก"}</h3>
-                        <label>รหัสแผนก:</label>
-                        <input type="text" className="dept-input" value={formData.id_code} onChange={e => setFormData({ ...formData, id_code: e.target.value })} style={{ width: '100%', marginBottom: '10px', padding: '8px' }} />
-                        <label>วันนัด:</label>
-                        <input type="datetime-local" className="dept-input" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} style={{ width: '100%', marginBottom: '10px', padding: '8px' }} />
-                        <label>ชื่อแผนก:</label>
-                        <input type="text" className="dept-input" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', marginBottom: '20px', padding: '8px' }} />
+                    <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '100%', maxWidth: '380px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+                        <h3 style={{ marginBottom: '20px', color: '#3e9d8a', textAlign: 'center' }}>
+                            {editId ? "แก้ไขข้อมูลแผนก" : "เพิ่มข้อมูลแผนก"}
+                        </h3>
+                        
+                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>รหัสแผนก:</label>
+                        <input 
+                            type="text" 
+                            placeholder="เช่น D001"
+                            style={{ marginBottom: '15px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+                            value={formData.id_code}
+                            onChange={(e) => setFormData({ ...formData, id_code: e.target.value })}
+                        />
+
+                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>วันนัด:</label>
+                        <input 
+                            type="datetime-local" 
+                            style={{ marginBottom: '15px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+                            value={formData.date}
+                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        />
+                        
+                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>ชื่อแผนก:</label>
+                        <input 
+                            type="text" 
+                            placeholder="กรอกชื่อแผนก" 
+                            style={{ marginBottom: '25px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        />
+                        
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#3e9d8a' }} onClick={saveData}>บันทึก</button>
-                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#9ca3af' }} onClick={closeModal}>ยกเลิก</button>
+                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#3e9d8a' }} onClick={saveData}>
+                                บันทึก
+                            </button>
+                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#9ca3af' }} onClick={closeModal}>
+                                ยกเลิก
+                            </button>
                         </div>
                     </div>
                 </div>
