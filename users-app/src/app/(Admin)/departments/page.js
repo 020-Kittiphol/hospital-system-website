@@ -17,7 +17,7 @@ export default function DepartmentsPage() {
     // --- 1. ฟังก์ชันดึงข้อมูลจาก API (GET) ---
     const fetchDepartments = async () => {
         try {
-            const res = await fetch('/api/department');
+            const res = await fetch('/api/departments');
             if (!res.ok) throw new Error('Network response was not ok');
             const data = await res.json();
             
@@ -71,7 +71,7 @@ export default function DepartmentsPage() {
 
         try {
             const method = editId ? 'PUT' : 'POST';
-            const url = editId ? `/api/department/${editId}` : '/api/department';
+            const url = editId ? `/api/departments/${editId}` : '/api/department';
 
             const response = await fetch(url, {
                 method: method,
@@ -96,7 +96,7 @@ export default function DepartmentsPage() {
     const handleDelete = async (id) => {
         if (confirm("คุณแน่ใจหรือไม่ที่จะลบแผนกนี้?")) {
             try {
-                const response = await fetch(`/api/department/${id}`, { method: 'DELETE' });
+                const response = await fetch(`/api/departments/${id}`, { method: 'DELETE' });
                 if (response.ok) {
                     alert("ลบข้อมูลสำเร็จ ✅");
                     fetchDepartments(); // อัปเดตตารางใหม่
