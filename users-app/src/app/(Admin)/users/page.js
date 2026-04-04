@@ -13,11 +13,17 @@ export default function UsersPage() {
     const fetchPatients = async () => {
         try {
             const response = await fetch('/api/users', { cache: 'no-store' });
+
+            const data = await response.json();
+
+            console.log("🔍 ข้อมูลที่ API ส่งมา:", data);
+
             if (response.ok) {
-                const data = await response.json();
-                console.log("ข้อมูลจาก API ส่งมาคืออออ:", data);
                 setPatients(data);
+            } else {
+                alert(`เกิดข้อผิดพลาดจาก API: ${data.error}`);
             }
+            
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -29,15 +35,12 @@ export default function UsersPage() {
         fetchPatients();
     }, []);
 
-    // 🌟 ฟังก์ชันสำหรับลบข้อมูล
     const handleDelete = async (userId) => {
-        // มีหน้าต่างเด้งถามเพื่อความชัวร์ก่อนลบ
         if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้รหัส ${userId} ? ข้อมูลการนัดหมายจะหายไปด้วยนะ!`)) {
             return;
         }
 
         try {
-            // ยิงไปที่ API ด้วย method DELETE
             const response = await fetch('/api/users', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
@@ -46,7 +49,7 @@ export default function UsersPage() {
 
             if (response.ok) {
                 alert("ลบข้อมูลสำเร็จ!");
-                fetchPatients(); // โหลดข้อมูลตารางใหม่ทันทีโดยไม่ต้องรีเฟรชหน้า
+                fetchPatients();
             } else {
                 alert("ลบข้อมูลไม่สำเร็จ");
             }
@@ -55,10 +58,9 @@ export default function UsersPage() {
         }
     };
 
-    // 🌟 ฟังก์ชันสำหรับแก้ไข (เดี๋ยวเรามาทำกันต่อครับ)
     const handleEdit = (patient) => {
         localStorage.setItem('edit_patient_data', JSON.stringify(patient));
-        router.push('/users/edit'); // พาวาร์ปไปหน้าแก้ไข
+        router.push('/users/edit');
     };
     
     return (
@@ -79,7 +81,7 @@ export default function UsersPage() {
 
                     <main className="modern-content">
                         <div className="card-table">
-                            <h2 style={{ color: '#2c7a6b', margin: 0, marginBottom: '20px' }}>ข้อมูลผู้ป่วย / อาการเบื้องต้น</h2>
+                            <h2 style={{ color: '#2c7a6b', margin: 0, marginBottom: '20px' }}>ข้อมูลผู้ป่วย</h2>
 
                             <div style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid #f0f0f0' }}>
                                 <table className="beautiful-table">
@@ -89,7 +91,6 @@ export default function UsersPage() {
                                             <th>ชื่อ - นามสกุล</th>
                                             <th>อายุ</th>
                                             <th>เพศ</th>
-                                            <th style={{ width: '30%' }}>อาการที่แจ้ง</th>
                                             <th>จัดการ</th>
                                         </tr>
                                     </thead>
@@ -104,10 +105,7 @@ export default function UsersPage() {
                                                     <td>{patient.first_name} {patient.last_name}</td>
                                                     <td>{patient.age ? `${patient.age} ปี` : '-'}</td>
                                                     <td>{patient.gender || '-'}</td>
-                                                    <td style={{ textAlign: 'left', color: patient.symptoms ? '#333' : '#999' }}>
-                                                        {patient.symptoms || 'ไม่ได้ระบุอาการ'}
-                                                    </td>
-                                                
+
                                                     <td>
                                                         <div className="action-btns">
                                                             <button className="btn-edit" onClick={() => handleEdit(patient)}>แก้ไข</button>

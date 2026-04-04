@@ -1,15 +1,12 @@
 import { NextResponse } from 'next/server';
 const pool = require('@/app/models/db_pool');
 
-// 🌟 1. ดึงข้อมูล (GET)
 export async function GET() {
     try {
         const [rows] = await pool.query(
-            `SELECT 
-                u.user_id, u.first_name, u.last_name, u.age, u.gender, 
-                (SELECT symptoms FROM appointment WHERE user_id = u.user_id ORDER BY app_date DESC LIMIT 1) AS symptoms
-             FROM users u
-             WHERE u.role_id = 2`
+            `SELECT user_id, first_name, last_name, age, gender
+             FROM users
+             WHERE role_id = 2`
         );
         return NextResponse.json(rows, { status: 200 });
     } catch (error) {
@@ -18,7 +15,6 @@ export async function GET() {
     }
 }
 
-// 🌟 2. ลบข้อมูล (DELETE)
 export async function DELETE(request) {
     try {
         const body = await request.json();
@@ -39,18 +35,15 @@ export async function DELETE(request) {
     }
 }
 
-// 🌟 3. แก้ไขข้อมูล (PUT) - ตัวที่เจมลืมใส่ครับ! 😆
 export async function PUT(request) {
     try {
         const body = await request.json();
         const { user_id, first_name, last_name, age, gender } = body;
 
-        // เช็คว่าส่ง ID มาไหม
         if (!user_id) {
             return NextResponse.json({ error: "ไม่พบรหัสผู้ใช้" }, { status: 400 });
         }
 
-        // อัปเดตข้อมูลลงฐานข้อมูล
         await pool.query(
             `UPDATE users SET first_name = ?, last_name = ?, age = ?, gender = ? WHERE user_id = ?`,
             [first_name, last_name, age || 0, gender, user_id]

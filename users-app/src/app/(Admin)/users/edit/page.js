@@ -1,4 +1,6 @@
 "use client";
+
+import './style.css';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -53,33 +55,6 @@ export default function EditUserPage() {
 
     return (
         <>
-            <style>{`
-                /* 🌟 เปลี่ยนชื่อคลาสใหม่หมด จะได้ไม่ตีกับหน้าหลัก */
-                .edit-wrapper { display: flex; flex-direction: column; min-height: 100vh; background-color: #f4f8f7; font-family: 'Sarabun', sans-serif; margin: 0; }
-                .edit-header { background: #3e9d8a; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 10; }
-                .edit-body { display: flex; flex: 1; }
-                
-                .edit-sidebar { width: 260px; background-color: #3e9d8a; flex-shrink: 0; box-shadow: 2px 0 10px rgba(0,0,0,0.05); z-index: 5; }
-                .edit-sidebar a { display: block; padding: 16px 25px; color: rgba(255,255,255,0.85); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; font-size: 16px; }
-                .edit-sidebar a.active { background-color: white; color: #3e9d8a; font-weight: bold; border-left: 5px solid #f39c12; }
-                
-                .edit-content { flex: 1; padding: 40px; display: flex; justify-content: center; align-items: flex-start; overflow-x: auto; width: 100%; }
-                
-                .form-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); width: 100%; max-width: 600px; text-align: center; }
-                .form-title { color: #2c7a6b; font-size: 24px; font-weight: bold; margin-bottom: 30px; }
-                
-                .form-group { margin-bottom: 20px; text-align: left; }
-                .form-label { display: block; font-weight: bold; color: #333; margin-bottom: 8px; font-size: 16px; }
-                .form-input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Sarabun'; box-sizing: border-box; font-size: 16px; outline: none; transition: border 0.3s; }
-                .form-input:focus { border-color: #3e9d8a; }
-                
-                .btn-group { display: flex; gap: 15px; margin-top: 35px; }
-                .btn-save { flex: 1; padding: 14px; background-color: #3e9d8a; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-                .btn-save:hover { background-color: #2c7a6b; }
-                .btn-cancel { flex: 1; padding: 14px; background-color: #f44336; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-                .btn-cancel:hover { background-color: #d32f2f; }
-            `}</style>
-
             <div className="edit-wrapper">
                 <header className="edit-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
@@ -93,7 +68,7 @@ export default function EditUserPage() {
 
                     <main className="edit-content">
                         <div className="form-card">
-                            <div className="form-title">แก้ไขข้อมูลผู้ใช้ (ID: {editData.user_id})</div>
+                            <div className="form-title">แก้ไขข้อมูลผู้ใช้</div>
                             
                             <form onSubmit={handleSave}>
                                 <div className="form-group">
