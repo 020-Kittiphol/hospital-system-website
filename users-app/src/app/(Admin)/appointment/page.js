@@ -64,6 +64,7 @@ export default function AppointmentPage() {
                                             <th>แผนกของแพทย์</th>
                                             <th>วัน/เดือน/ปี</th>
                                             <th>เวลา</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
