@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-const pool = require('@/app/models/db_pool');
+const pool = require('../../../models/db_pool');
 
 export async function DELETE(req, { params }) {
     await pool.query(

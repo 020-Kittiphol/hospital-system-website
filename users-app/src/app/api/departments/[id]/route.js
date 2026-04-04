@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-const pool = require('@/app/models/db_pool');
+const pool = require('../../../../models/db_pool')
 
 export async function GET() {
     const [rows] = await pool.query("SELECT * FROM department");
@@ -15,5 +15,5 @@ export async function POST(req) {
         [department_id, department_name]
     );
 
-    return NextResponse.json({ message: "เพิ่มสำเร็จ" });
+    return NextResponse.json({ message: "เพิ่มสำเร็จ" })
 }
