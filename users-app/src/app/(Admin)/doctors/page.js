@@ -64,6 +64,7 @@ export default function DoctorsPage() {
                         <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
                         <Link href="/departments">ข้อมูลแผนก</Link>
                         <Link href="/doctors" className="active">ข้อมูลเเพทย์</Link>
+                        <Link href="/charts">สรุปข้อมูล chart</Link>
                     </aside>
 
                     <main className="modern-content">
@@ -102,8 +103,7 @@ export default function DoctorsPage() {
                                                     <td>{doc.first_name} {doc.last_name}</td>
                                                     
                                                     <td>{doc.department_id}</td>
-                                                
-                                                    <td>{doc.tel_numdoc ? doc.tel_numdoc : "-"}</td>
+                                    
                                                     
                                                 </tr>
                                             ))
