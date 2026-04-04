@@ -7,6 +7,7 @@
     align-items: center;
     padding: 60px 20px;
 }
+
 .my-reg-title {
     color: #26a69a;
     font-size: 32px;
@@ -14,33 +15,33 @@
     margin-bottom: 24px;
     text-align: center;
 }
+
 .my-reg-card {
-          background: #ffffff;
-          width: 100%;
-          max-width: 650px;
-          border-radius: 12px;
-          padding: 30px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
+    background: #ffffff;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
 
-        .my-reg-btn {
-          width: 100%;
-          background-color: #26a69a;
-          color: white;
-          padding: 14px;
-          border: none;
-          border-radius: 30px;
-          font-size: 16px;
-          font-weight: bold;
-          cursor: pointer;
-          margin-top: 10px;
-          transition: background-color 0.2s;
-        }
+.my-reg-btn {
+    width: 100%;
+    background-color: #26a69a;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
 
-        
-        @media (max-width: 500px) {
-          .my-reg-row {
-            flex-direction: column;
-            gap: 10px;
-          }
+@media (max-width: 500px) {
+    .my-reg-row {
+        flex-direction: column;
+        gap: 10px;
         }
+}
