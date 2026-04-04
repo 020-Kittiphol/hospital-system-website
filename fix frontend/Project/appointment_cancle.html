@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 <title>ยกเลิกการนัดหมาย</title>
 </head>
 
 <body>
 
-<header class="main-header">
-    <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
-</header>
+    <header class="main-header">
+        <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
+    </header>
 
-<div class="container">
+    <div class="container">
 <main class="content">
 <div class="card">
 <center>
@@ -35,29 +35,29 @@
 </center>
 </div>
 </main>
-</div>
+    </div>
 
-<script>
+    <script>
 
-function cancelAppointment(e){
-    e.preventDefault();
+        function cancelAppointment(e){
+        e.preventDefault();
 
-    const id = new URLSearchParams(window.location.search).get("id");
+        const id = new URLSearchParams(window.location.search).get("id");
 
-    fetch("http://localhost:3000/appointments/" + id,{
+        fetch("http://localhost:3000/appointments/" + id,{
         method:"DELETE"
-    })
-    .then(()=>{
-        alert("ยกเลิกสำเร็จ");
-        window.location.href="appointment.html";
-    });
-}
+        })
+            .then(()=>{
+             alert("ยกเลิกสำเร็จ");
+            window.location.href="appointment.html";
+        });
+        }
 
-function goBack(){
-    window.location.href="appointment.html";
-}
+        function goBack(){
+         window.location.href="appointment.html";
+        }
 
-</script>
+        </script>
 
 </body>
 </html>

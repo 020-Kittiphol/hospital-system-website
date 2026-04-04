@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 <title>แก้ไขการนัดหมาย</title>
 </head>
 
 <body>
 
-<h2>แก้ไขการนัดหมาย</h2>
+    <h2>แก้ไขการนัดหมาย</h2>
 
-<form onsubmit="updateData(event)">
+    <form onsubmit="updateData(event)">
 
-ชื่อคนไข้  
-<input type="text" id="patient_name"><br><br>
+        ชื่อคนไข้ <input type="text" id="patient_name"><br> <br>
+        
+        ชื่อแพทย์ <input type="text" id="doctor_name"><br> <br>
 
-ชื่อแพทย์  
-<input type="text" id="doctor_name"><br><br>
+        แผนก <input type="text" id="department"><br> <br>
 
-แผนก  
-<input type="text" id="department"><br><br>
+        วันที่ <input type="date" id="date"><br> <br>
 
-วันที่  
-<input type="date" id="date"><br><br>
+        เวลา <input type="time" id="time"><br> <br>
 
-เวลา  
-<input type="time" id="time"><br><br>
+        <button type="submit">บันทึก</button>
+        <button type="button" onclick="goBack()">ยกเลิก</button>
 
-<button type="submit">บันทึก</button>
-<button type="button" onclick="goBack()">ยกเลิก</button>
-
-</form>
+    </form>
 
 <script>
 
-const id = new URLSearchParams(window.location.search).get("id");
+    const id = new URLSearchParams(window.location.search).get("id");
 
-// โหลดข้อมูลเดิม
-fetch("http://localhost:3000/appointments/" + id)
-.then(res => res.json())
-.then(data => {
-    document.getElementById("patient_name").value = data.patient_name;
-    document.getElementById("doctor_name").value = data.doctor_name;
-    document.getElementById("department").value = data.department;
-    document.getElementById("date").value = data.date;
-    document.getElementById("time").value = data.time;
-});
+    fetch("http://localhost:3000/appointments/" + id)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("patient_name").value = data.patient_name;
+        document.getElementById("doctor_name").value = data.doctor_name;
+        document.getElementById("department").value = data.department;
+        document.getElementById("date").value = data.date;
+        document.getElementById("time").value = data.time;
+    });
 
-// update
 function updateData(e){
     e.preventDefault();
 
