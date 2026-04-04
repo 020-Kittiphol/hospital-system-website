@@ -77,6 +77,7 @@ export default function UsersPage() {
                         <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
                         <Link href="/departments">ข้อมูลแผนก</Link>
                         <Link href="/doctors">ข้อมูลเเพทย์</Link>
+                        <Link href="/charts">สรุปข้อมูล chart</Link>
                     </aside>
 
                     <main className="modern-content">
