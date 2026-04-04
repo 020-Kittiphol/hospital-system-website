@@ -15,7 +15,6 @@ export default function PatientDashboard() {
     const [formData, setFormData] = useState({
         department_id: '',
         doctor_id: '',
-        app_date: '',
         symptoms: ''
     });
 
@@ -59,8 +58,8 @@ export default function PatientDashboard() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!formData.department_id || !formData.doctor_id || !formData.appointment_date) {
-        alert("กรุณาเลือกแผนก แพทย์ และวันที่ให้ครบถ้วนครับ");
+        if (!formData.department_id || !formData.doctor_id) {
+        alert("กรุณาเลือกแผนก แพทย์ ให้ครบถ้วนครับ");
         return;
     }
 
@@ -84,7 +83,6 @@ export default function PatientDashboard() {
                 setFormData({
                     department_id: '',
                     doctor_id: '',
-                    appointment_date: '',
                     symptoms: ''
                 });
             } else {
@@ -107,7 +105,7 @@ export default function PatientDashboard() {
 
                 <div style={{ textAlign: 'center', marginTop: '20px', color: '#555' }}>
                     <h2>ระบบนัดหมายแพทย์</h2>
-                    <p>สวัสดีคุณ {firstName}, กรุณาเลือกแผนก แพทย์ และวันที่ต้องการนัดหมาย</p>
+                    <p>สวัสดีคุณ {firstName}, กรุณาเลือกแผนก แพทย์ ที่ต้องการนัดหมาย</p>
                 </div>
 
                 <div className="form-container">
@@ -139,12 +137,6 @@ export default function PatientDashboard() {
                                         </option>
                                     ))}
                                 </select>
-                            </div>
-
-
-                            <div className="form-group">
-                                <label className="form-label">วันที่ต้องการนัดหมาย</label>
-                                <input type="date" name="appointment_date" className="form-input" value={formData.appointment_date} onChange={handleChange} required />
                             </div>
 
                             <div className="form-group">

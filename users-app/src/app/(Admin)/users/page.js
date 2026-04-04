@@ -57,10 +57,10 @@ export default function UsersPage() {
 
     // 🌟 ฟังก์ชันสำหรับแก้ไข (เดี๋ยวเรามาทำกันต่อครับ)
     const handleEdit = (patient) => {
-        console.log("ต้องการแก้ไข:", patient);
-        alert(`เดี๋ยวเรามาทำหน้าต่าง Pop-up สำหรับแก้ไขข้อมูลของ ${patient.first_name} กันต่อครับ! 🚀`);
+        localStorage.setItem('edit_patient_data', JSON.stringify(patient));
+        router.push('/users/edit'); // พาวาร์ปไปหน้าแก้ไข
     };
-
+    
     return (
         <>
             <div className="modern-wrapper">
@@ -97,9 +97,10 @@ export default function UsersPage() {
                                         {isLoading ? (
                                             <tr><td colSpan="6" style={{ padding: '30px' }}>กำลังโหลดข้อมูล... ⏳</td></tr>
                                         ) : patients.length > 0 ? (
-                                            patients.map((patient) => (
+                                            patients.map((patient, index) => (
                                                 <tr key={patient.user_id}>
-                                                    <td style={{ fontWeight: 'bold', color: '#3498db' }}>{patient.user_id}</td>
+
+                                                    <td style={{ fontWeight: 'bold', color: '#3498db' }}>{index + 1}</td>
                                                     <td>{patient.first_name} {patient.last_name}</td>
                                                     <td>{patient.age ? `${patient.age} ปี` : '-'}</td>
                                                     <td>{patient.gender || '-'}</td>

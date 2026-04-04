@@ -4,16 +4,16 @@ const pool = require('@/app/models/db_pool');
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { user_id, doctor_id, department_id, appointment_date, symptoms } = body;
+        const { user_id, doctor_id, department_id, symptoms } = body;
 
         if (!user_id || !doctor_id || !department_id || !appointment_date) {
             return NextResponse.json({ error: "ข้อมูลไม่ครบถ้วน" }, { status: 400 });
         }
 
         const [result] = await pool.query(
-            `INSERT INTO appointments (user_id, doctor_id, department_id, appointment_date, symptoms)
+            `INSERT INTO appointments (user_id, doctor_id, department_id, symptoms)
              VALUES (?, ?, ?, ?, ?)`,
-            [user_id, doctor_id, department_id, appointment_date, symptoms || '']
+            [user_id, doctor_id, department_id, symptoms || '']
         );
 
         return NextResponse.json({ message: "บันทึกการนัดหมายสำเร็จ", appointmentId: result.insertId }, { status: 201 });
