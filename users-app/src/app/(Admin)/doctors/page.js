@@ -102,8 +102,7 @@ export default function DoctorsPage() {
                                                     <td>{doc.first_name} {doc.last_name}</td>
                                                     
                                                     <td>{doc.department_id}</td>
-                                                
-                                                    <td>{doc.tel_numdoc ? doc.tel_numdoc : "-"}</td>
+                                    
                                                     
                                                 </tr>
                                             ))
