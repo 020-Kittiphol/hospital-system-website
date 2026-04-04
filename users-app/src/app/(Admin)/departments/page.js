@@ -14,11 +14,23 @@ export default function DepartmentsPage() {
         { id: 2, date: '2026-04-01T13:30', name: 'ศัลยกรรม' },
     ]);
     const [formData, setFormData] = useState({ date: '', name: '' });
+    
+    // --- ส่วนที่เพิ่มใหม่: เก็บ ID ของตัวที่กำลังจะแก้ไข ---
+    const [editId, setEditId] = useState(null); 
 
     const openModal = () => setIsModalOpen(true);
+    
     const closeModal = () => {
         setIsModalOpen(false);
         setFormData({ date: '', name: '' }); 
+        setEditId(null); // ล้างค่า ID ที่แก้ไข
+    };
+
+    // --- ส่วนที่เพิ่มใหม่: ฟังก์ชันเมื่อกดปุ่มแก้ไขในตาราง ---
+    const handleEdit = (dept) => {
+        setEditId(dept.id);
+        setFormData({ date: dept.date, name: dept.name });
+        openModal();
     };
 
     const saveData = () => {
@@ -26,16 +38,27 @@ export default function DepartmentsPage() {
             alert("กรุณากรอกข้อมูลให้ครบถ้วน");
             return;
         }
-        const newEntry = { id: Date.now(), ...formData };
-        setDepartments([...departments, newEntry]);
-        alert("บันทึกข้อมูลสำเร็จ ✅");
+
+        if (editId) {
+            // --- กรณีแก้ไข (Update) ---
+            const updatedDepartments = departments.map((dept) =>
+                dept.id === editId ? { ...dept, ...formData } : dept
+            );
+            setDepartments(updatedDepartments);
+            alert("แก้ไขข้อมูลสำเร็จ ✅");
+        } else {
+            // --- กรณีเพิ่มใหม่ (Create) ---
+            const newEntry = { id: Date.now(), ...formData };
+            setDepartments([...departments, newEntry]);
+            alert("บันทึกข้อมูลสำเร็จ ✅");
+        }
+        
         closeModal();
     };
 
     return (
         <> 
             <div className="dept-page-container">
-                
                 <header className="dept-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
                     <button 
@@ -47,7 +70,6 @@ export default function DepartmentsPage() {
                 </header>
 
                 <div className="dept-body">
-
                     <aside className="dept-sidebar">
                         <Link href="/users">ข้อมูลผู้ใช้</Link>
                         <Link href="/appointment">ข้อมูลการนัดหมาย</Link>
@@ -57,7 +79,6 @@ export default function DepartmentsPage() {
 
                     <main className="dept-content">
                         <div className="dept-card">
-                            
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '25px' }}>
                                 <h2 style={{ color: '#3e9d8a', margin: 0 }}>ข้อมูลแผนก</h2>
                                 <button 
@@ -88,6 +109,7 @@ export default function DepartmentsPage() {
                                                         <button 
                                                             className="dept-btn" 
                                                             style={{ backgroundColor: '#ff9800', padding: '6px 12px', fontSize: '13px' }}
+                                                            onClick={() => handleEdit(dept)} // เรียกใช้ handleEdit
                                                         >
                                                             แก้ไข
                                                         </button>
@@ -105,7 +127,6 @@ export default function DepartmentsPage() {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </main>
                 </div>
@@ -114,7 +135,10 @@ export default function DepartmentsPage() {
             {isModalOpen && (
                 <div style={{ display: 'flex', position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
                     <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '100%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-                        <h3 style={{ marginBottom: '20px', color: '#3e9d8a', textAlign: 'center' }}>เพิ่มข้อมูลแผนก</h3>
+                        {/* เปลี่ยนหัวข้อตามโหมด */}
+                        <h3 style={{ marginBottom: '20px', color: '#3e9d8a', textAlign: 'center' }}>
+                            {editId ? "แก้ไขข้อมูลแผนก" : "เพิ่มข้อมูลแผนก"}
+                        </h3>
                         
                         <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>วันนัด:</label>
                         <input 
@@ -139,7 +163,7 @@ export default function DepartmentsPage() {
                                 style={{ flex: 1, backgroundColor: '#3e9d8a' }} 
                                 onClick={saveData}
                             >
-                                บันทึก
+                                {editId ? "บันทึกการแก้ไข" : "บันทึก"}
                             </button>
                             <button 
                                 className="dept-btn" 
