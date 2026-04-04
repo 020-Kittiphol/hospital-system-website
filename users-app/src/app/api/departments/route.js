@@ -16,6 +16,8 @@ export async function POST(req) {
     try {
         const body = await req.json();
         const { department_name, department_date, department_id_code } = body;
+        
+        // แก้ไข SQL: ตัดส่วนที่ซ้ำออก
         await pool.query(
             "INSERT INTO department (department_name, department_date, department_id_code) VALUES (?, ?, ?)",
             [department_name, department_date, department_id_code]
@@ -30,9 +32,10 @@ export async function POST(req) {
 export async function PUT(req) {
     try {
         const { searchParams } = new URL(req.url);
-        const id = searchParams.get('id'); // รับค่าจาก ?id=...
+        const id = searchParams.get('id'); 
         const body = await req.json();
         const { department_name, department_date, department_id_code } = body;
+
         await pool.query(
             "UPDATE department SET department_name=?, department_date=?, department_id_code=? WHERE department_id=?",
             [department_name, department_date, department_id_code, id]
