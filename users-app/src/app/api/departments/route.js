@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import db from '@/app/lib/db';
+const pool = require('@/app/models/db_pool');
 
-// DELETE
 export async function DELETE(req, { params }) {
-    await db.query(
+    await pool.query(
         "DELETE FROM department WHERE department_id=?",
         [params.id]
     );
@@ -11,11 +10,10 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ message: "ลบสำเร็จ" });
 }
 
-// PUT
 export async function PUT(req, { params }) {
     const body = await req.json();
 
-    await db.query(
+    await pool.query(
         "UPDATE department SET department_name=? WHERE department_id=?",
         [body.department_name, params.id]
     );
