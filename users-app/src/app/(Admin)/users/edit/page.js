@@ -1,0 +1,108 @@
+"use client";
+
+import './style.css';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+export default function EditUserPage() {
+    const router = useRouter();
+    
+    const [editData, setEditData] = useState({
+        user_id: '', first_name: '', last_name: '', age: '', gender: 'ชาย'
+    });
+
+    useEffect(() => {
+        const savedData = localStorage.getItem('edit_patient_data');
+        if (savedData) {
+            setEditData(JSON.parse(savedData));
+        } else {
+            alert('ไม่พบข้อมูลที่จะแก้ไข');
+            router.push('/users'); 
+        }
+    }, [router]);
+
+    const handleChange = (e) => {
+        setEditData({ ...editData, [e.target.name]: e.target.value });
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/api/users', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editData)
+            });
+
+            if (response.ok) {
+                alert("แก้ไขข้อมูลสำเร็จ! ✨");
+                localStorage.removeItem('edit_patient_data'); 
+                router.push('/users'); 
+            } else {
+                alert("เกิดข้อผิดพลาดในการแก้ไข");
+            }
+        } catch (error) {
+            console.error("Error updating:", error);
+            alert("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้");
+        }
+    };
+
+    const handleCancel = () => {
+        localStorage.removeItem('edit_patient_data');
+        router.push('/users'); 
+    };
+
+    return (
+        <>
+            <div className="edit-wrapper">
+                <header className="edit-header">
+                    <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
+                    <button style={{ padding: '8px 15px', borderRadius: '5px', border: 'none', cursor: 'pointer' }} onClick={() => router.push('/signin')}>Sign out</button>
+                </header>
+
+                <div className="edit-body">
+                    <aside className="edit-sidebar">
+                        <Link href="#" className="active">แก้ไขข้อมูลผู้ใช้</Link>
+                    </aside>
+
+                    <main className="edit-content">
+                        <div className="form-card">
+                            <div className="form-title">แก้ไขข้อมูลผู้ใช้</div>
+                            
+                            <form onSubmit={handleSave}>
+                                <div className="form-group">
+                                    <label className="form-label">ชื่อคนไข้:</label>
+                                    <input type="text" name="first_name" className="form-input" value={editData.first_name} onChange={handleChange} required />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">นามสกุล:</label>
+                                    <input type="text" name="last_name" className="form-input" value={editData.last_name} onChange={handleChange} required />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">อายุ:</label>
+                                    <input type="number" name="age" className="form-input" value={editData.age} onChange={handleChange} required />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">เพศ:</label>
+                                    <select name="gender" className="form-input" value={editData.gender} onChange={handleChange}>
+                                        <option value="ชาย">ชาย</option>
+                                        <option value="หญิง">หญิง</option>
+                                    </select>
+                                </div>
+
+                                <div className="btn-group">
+                                    <button type="submit" className="btn-save">ตกลง</button>
+                                    <button type="button" className="btn-cancel" onClick={handleCancel}>ยกเลิก</button>
+                                </div>
+                            </form>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </>
+    );
+}

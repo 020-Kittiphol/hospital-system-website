@@ -1,58 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+<title>แก้ไขการนัดหมาย</title>
 </head>
+
 <body>
-    <header class="main-header">
-        <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
-    </header>
-    <div class="container">
-        <aside class="sidebar">
-            <nav>
-                <a href="#" class="nav-item active">แก้ไขข้อมูลการนัดหมาย</a>
-            </nav>
-         </aside>
-    <main class="content">
-        <div class="card">
-            <center>
-            <h2>แก้ไขข้อมูลการนัดหมาย</h2>
-            <br>
-            
-            <form onsubmit="goNext(event)">
-                ชื่อ-นามสกุลคนไข้:
-                <input type="text" name="first_name"><br> <br>
 
-                รายชื่อแพทย์:
-                <input type="text" name="name_name"><br> <br>
+    <h2>แก้ไขการนัดหมาย</h2>
 
-                แผนกแพทย์:
-                <input type="text" name="panak_name"><br> <br>
+    <form onsubmit="updateData(event)">
 
-                วัน/เดือน/ปี:
-                <input type="date" name="date"><br> <br>
+        ชื่อคนไข้ <input type="text" id="patient_name"><br> <br>
+        
+        ชื่อแพทย์ <input type="text" id="doctor_name"><br> <br>
 
-                เวลา:
-                <input type="time" name="time"><br> <br>
+        แผนก <input type="text" id="department"><br> <br>
 
-                <button type="submit" > ตกลง</button>
-                <button type="reset"> ยกเลิก</button>
+        วันที่ <input type="date" id="date"><br> <br>
 
-            </form>
-            </center>
-            </div>
-        </div>
-    </main>
-    </div>
-    <script>
-function goNext(e) {
-    e.preventDefault(); // กันรีเฟรช
+        เวลา <input type="time" id="time"><br> <br>
 
-    // ไปหน้าใหม่
-    window.location.href = "appointment.html";
+        <button type="submit">บันทึก</button>
+        <button type="button" onclick="goBack()">ยกเลิก</button>
+
+    </form>
+
+<script>
+
+    const id = new URLSearchParams(window.location.search).get("id");
+
+    fetch("http://localhost:3000/appointments/" + id)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("patient_name").value = data.patient_name;
+        document.getElementById("doctor_name").value = data.doctor_name;
+        document.getElementById("department").value = data.department;
+        document.getElementById("date").value = data.date;
+        document.getElementById("time").value = data.time;
+    });
+
+function updateData(e){
+    e.preventDefault();
+
+    fetch("http://localhost:3000/appointments/" + id,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            patient_name: document.getElementById("patient_name").value,
+            doctor_name: document.getElementById("doctor_name").value,
+            department: document.getElementById("department").value,
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value
+        })
+    })
+    .then(()=>{
+        alert("แก้ไขสำเร็จ");
+        window.location.href="appointment.html";
+    });
 }
+
+function goBack(){
+    window.location.href="appointment.html";
+}
+
 </script>
+
 </body>
 </html>

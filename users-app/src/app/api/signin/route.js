@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import pool from '@/models/db_pool';
-import md5 from 'md5'; // 🌟 ดึง md5 ตัวเดียวกับที่เจมใช้หน้าเว็บมาเลย
+import md5 from 'md5';
 
 export async function POST(request) {
     try {
@@ -14,7 +14,6 @@ export async function POST(request) {
 
         const user = users[0];
 
-        // 🌟 โค้ดจะสั้นลงแบบนี้เลยครับ! เหมือนที่เจมเขียนในหน้าเว็บเป๊ะๆ
         const hashedPassword = md5(password);
         const isMatch = (hashedPassword === user.password);
 

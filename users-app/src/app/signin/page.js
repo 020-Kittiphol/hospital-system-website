@@ -3,7 +3,7 @@
 import './style3.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // 🌟 1. เพิ่ม import Link ตรงนี้ครับ
+import Link from 'next/link';
 import md5 from 'md5';
 
 export default function LoginPage() {
@@ -71,11 +71,10 @@ export default function LoginPage() {
             localStorage.setItem("symptoms", d.data.user_info.symptoms);
             localStorage.setItem("role_id", d.data.user_info.role_id);
 
-            // 💡 โค้ดเดิมของเจม: ถ้าเป็นแอดมิน (role=1) ให้ไปหน้า home
             if (parseInt(d.data.user_info.role_id) === 1) {
                 router.push("./home");
             } 
-            // 💡 ไอเดียเพิ่มเติม: ถ้าเจมทำหน้าสำหรับคนไข้ (role=2) เสร็จแล้ว ค่อยมาปลดล็อกโค้ดตรงนี้ได้ครับ
+
             else if (parseInt(d.data.user_info.role_id) === 2) {
                 router.push("./symptom"); 
             }
