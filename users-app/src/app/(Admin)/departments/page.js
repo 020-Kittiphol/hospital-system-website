@@ -10,10 +10,9 @@ export default function DepartmentsPage() {
 
     // --- States ---
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [departments, setDepartments] = useState([]); 
-    // เพิ่ม id_code ใน formData
+    const [departments, setDepartments] = useState([]);
     const [formData, setFormData] = useState({ id_code: '', date: '', name: '' });
-    const [editId, setEditId] = useState(null); 
+    const [editId, setEditId] = useState(null);
 
     // --- 1. ฟังก์ชันดึงข้อมูลจาก API ---
     const fetchDepartments = async () => {
@@ -24,7 +23,7 @@ export default function DepartmentsPage() {
             
             const formattedData = data.map(item => ({
                 id: item.department_id,
-                id_code: item.department_id_code || item.department_id, // ใช้รหัสแผนกถ้ามี ถ้าไม่มีใช้ ID รันอัตโนมัติ
+                id_code: item.department_id_code || item.department_id,
                 name: item.department_name,
                 date: item.department_date
             }));
@@ -43,17 +42,17 @@ export default function DepartmentsPage() {
     
     const closeModal = () => {
         setIsModalOpen(false);
-        setFormData({ id_code: '', date: '', name: '' }); 
+        setFormData({ id_code: '', date: '', name: '' });
         setEditId(null);
     };
 
     const handleEdit = (dept) => {
         setEditId(dept.id);
         const dateForInput = dept.date ? new Date(dept.date).toISOString().slice(0, 16) : '';
-        setFormData({ 
-            id_code: dept.id_code || '', 
-            date: dateForInput, 
-            name: dept.name 
+        setFormData({
+            id_code: dept.id_code || '',
+            date: dateForInput,
+            name: dept.name
         });
         openModal();
     };
@@ -66,7 +65,7 @@ export default function DepartmentsPage() {
         }
 
         const payload = {
-            department_id_code: formData.id_code, // รหัสแผนกที่เพิ่มใหม่
+            department_id_code: formData.id_code,
             department_name: formData.name,
             department_date: formData.date
         };
@@ -108,11 +107,11 @@ export default function DepartmentsPage() {
     };
 
     return (
-        <> 
+        <>
             <div className="dept-page-container">
                 <header className="dept-header">
                     <h1 style={{ margin: 0, fontSize: '24px' }}>ระบบนัดแพทย์โรงพยาบาล</h1>
-                    <button 
+                    <button
                         onClick={() => router.push('/signin')}
                         style={{ padding: '8px 20px', backgroundColor: 'white', color: '#3e9d8a', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
                     >
@@ -151,20 +150,20 @@ export default function DepartmentsPage() {
                                         {departments.length > 0 ? (
                                             departments.map((dept) => (
                                                 <tr key={dept.id}>
-                                                    <td style={{ fontWeight: 'bold', color: '#3e9d8a' }}>{dept.id_code}</td> {/* แสดงรหัสแผนก */}
+                                                    <td style={{ fontWeight: 'bold', color: '#3e9d8a' }}>{dept.id_code}</td>
                                                     <td>{dept.date ? new Date(dept.date).toLocaleString('th-TH') : '-'}</td>
                                                     <td>{dept.name}</td>
                                                     <td style={{ textAlign: 'center' }}>
                                                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                                            <button 
-                                                                className="dept-btn" 
+                                                            <button
+                                                                className="dept-btn"
                                                                 style={{ backgroundColor: '#ff9800', padding: '6px 12px', fontSize: '13px' }}
                                                                 onClick={() => handleEdit(dept)}
                                                             >
                                                                 แก้ไข
                                                             </button>
-                                                            <button 
-                                                                className="dept-btn" 
+                                                            <button
+                                                                className="dept-btn"
                                                                 style={{ backgroundColor: '#f44336', padding: '6px 12px', fontSize: '13px' }}
                                                                 onClick={() => handleDelete(dept.id)}
                                                             >
@@ -195,11 +194,10 @@ export default function DepartmentsPage() {
                         <h3 style={{ marginBottom: '20px', color: '#3e9d8a', textAlign: 'center' }}>
                             {editId ? "แก้ไขข้อมูลแผนก" : "เพิ่มข้อมูลแผนก"}
                         </h3>
-                        
-                        {/* เพิ่มช่องกรอกรหัสแผนก */}
+
                         <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>รหัสแผนก:</label>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             placeholder="เช่น DEPT-01"
                             style={{ marginBottom: '15px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
                             value={formData.id_code}
@@ -207,22 +205,22 @@ export default function DepartmentsPage() {
                         />
 
                         <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>วันนัด:</label>
-                        <input 
-                            type="datetime-local" 
+                        <input
+                            type="datetime-local"
                             style={{ marginBottom: '15px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
                             value={formData.date}
                             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                         />
-                        
+
                         <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>ชื่อแผนก:</label>
-                        <input 
-                            type="text" 
-                            placeholder="เช่น อายุรกรรม" 
+                        <input
+                            type="text"
+                            placeholder="เช่น อายุรกรรม"
                             style={{ marginBottom: '25px', width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         />
-                        
+
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <button className="dept-btn" style={{ flex: 1, backgroundColor: '#3e9d8a' }} onClick={saveData}>
                                 {editId ? "บันทึกการแก้ไข" : "บันทึก"}
