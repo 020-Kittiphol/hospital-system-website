@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // เพิ่ม useEffect
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import './bbb-2.css';
@@ -9,49 +9,96 @@ export default function DepartmentsPage() {
     const router = useRouter();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [departments, setDepartments] = useState([
-     ]);
+    const [departments, setDepartments] = useState([]); // เริ่มต้นด้วยค่าว่าง
     const [formData, setFormData] = useState({ date: '', name: '' });
-    
-    // --- ส่วนที่เพิ่มใหม่: เก็บ ID ของตัวที่กำลังจะแก้ไข ---
     const [editId, setEditId] = useState(null); 
+
+    // --- 1. ฟังก์ชันดึงข้อมูลจาก MySQL ---
+    const fetchDepartments = async () => {
+        try {
+            const res = await fetch('/api/department'); // เรียก API GET
+            const data = await res.json();
+            // แปลงชื่อ field ให้ตรงกับใน database (department_id, department_name)
+            const formattedData = data.map(item => ({
+                id: item.department_id,
+                name: item.department_name,
+                date: item.department_date
+            }));
+            setDepartments(formattedData);
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    };
+
+    // ดึงข้อมูลครั้งแรกเมื่อหน้าโหลด
+    useEffect(() => {
+        fetchDepartments();
+    }, []);
 
     const openModal = () => setIsModalOpen(true);
     
     const closeModal = () => {
         setIsModalOpen(false);
         setFormData({ date: '', name: '' }); 
-        setEditId(null); // ล้างค่า ID ที่แก้ไข
+        setEditId(null);
     };
 
-    // --- ส่วนที่เพิ่มใหม่: ฟังก์ชันเมื่อกดปุ่มแก้ไขในตาราง ---
     const handleEdit = (dept) => {
         setEditId(dept.id);
-        setFormData({ date: dept.date, name: dept.name });
+        // แปลง format วันที่ให้เข้ากับ input type="datetime-local" (YYYY-MM-DDTHH:mm)
+        const dateFormatted = dept.date ? new Date(dept.date).toISOString().slice(0, 16) : '';
+        setFormData({ date: dateFormatted, name: dept.name });
         openModal();
     };
 
-    const saveData = () => {
+    // --- 2. ฟังก์ชันบันทึกข้อมูลลง MySQL ---
+    const saveData = async () => {
         if (!formData.date || !formData.name) {
             alert("กรุณากรอกข้อมูลให้ครบถ้วน");
             return;
         }
 
-        if (editId) {
-            // --- กรณีแก้ไข (Update) ---
-            const updatedDepartments = departments.map((dept) =>
-                dept.id === editId ? { ...dept, ...formData } : dept
-            );
-            setDepartments(updatedDepartments);
-            alert("แก้ไขข้อมูลสำเร็จ ✅");
-        } else {
-            // --- กรณีเพิ่มใหม่ (Create) ---
-            const newEntry = { id: Date.now(), ...formData };
-            setDepartments([...departments, newEntry]);
-            alert("บันทึกข้อมูลสำเร็จ ✅");
+        const payload = {
+            department_name: formData.name,
+            department_date: formData.date
+        };
+
+        try {
+            if (editId) {
+                // กรณีแก้ไข (PUT)
+                await fetch(`/api/department/${editId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                alert("แก้ไขข้อมูลสำเร็จ ✅");
+            } else {
+                // กรณีเพิ่มใหม่ (POST)
+                await fetch('/api/department', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                alert("บันทึกข้อมูลสำเร็จ ✅");
+            }
+            fetchDepartments(); // โหลดข้อมูลใหม่จาก DB
+            closeModal();
+        } catch (error) {
+            alert("เกิดข้อผิดพลาดในการบันทึก");
         }
-        
-        closeModal();
+    };
+
+    // --- 3. ฟังก์ชันลบข้อมูลจาก MySQL ---
+    const handleDelete = async (id) => {
+        if (confirm("คุณแน่ใจหรือไม่ที่จะลบข้อมูลนี้?")) {
+            try {
+                await fetch(`/api/department/${id}`, { method: 'DELETE' });
+                alert("ลบข้อมูลสำเร็จ ✅");
+                fetchDepartments(); // โหลดข้อมูลใหม่จาก DB
+            } catch (error) {
+                alert("ไม่สามารถลบข้อมูลได้");
+            }
+        }
     };
 
     return (
@@ -79,11 +126,7 @@ export default function DepartmentsPage() {
                         <div className="dept-card">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '25px' }}>
                                 <h2 style={{ color: '#3e9d8a', margin: 0 }}>ข้อมูลแผนก</h2>
-                                <button 
-                                    className="dept-btn" 
-                                    style={{ backgroundColor: '#4Caf50' }}
-                                    onClick={openModal}
-                                >
+                                <button className="dept-btn" style={{ backgroundColor: '#4Caf50' }} onClick={openModal}>
                                     + เพิ่มข้อมูลแผนก
                                 </button>
                             </div>
@@ -98,30 +141,34 @@ export default function DepartmentsPage() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {departments.map((dept) => (
-                                            <tr key={dept.id}>
-                                                <td>{new Date(dept.date).toLocaleString('th-TH')}</td>
-                                                <td>{dept.name}</td>
-                                                <td style={{ textAlign: 'center' }}>
-                                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                                        <button 
-                                                            className="dept-btn" 
-                                                            style={{ backgroundColor: '#ff9800', padding: '6px 12px', fontSize: '13px' }}
-                                                            onClick={() => handleEdit(dept)} // เรียกใช้ handleEdit
-                                                        >
-                                                            แก้ไข
-                                                        </button>
-                                                        <button 
-                                                            className="dept-btn" 
-                                                            style={{ backgroundColor: '#f44336', padding: '6px 12px', fontSize: '13px' }}
-                                                            onClick={() => setDepartments(departments.filter(d => d.id !== dept.id))}
-                                                        >
-                                                            ลบ
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {departments.length > 0 ? (
+                                            departments.map((dept) => (
+                                                <tr key={dept.id}>
+                                                    <td>{new Date(dept.date).toLocaleString('th-TH')}</td>
+                                                    <td>{dept.name}</td>
+                                                    <td style={{ textAlign: 'center' }}>
+                                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                                                            <button 
+                                                                className="dept-btn" 
+                                                                style={{ backgroundColor: '#ff9800', padding: '6px 12px', fontSize: '13px' }}
+                                                                onClick={() => handleEdit(dept)}
+                                                            >
+                                                                แก้ไข
+                                                            </button>
+                                                            <button 
+                                                                className="dept-btn" 
+                                                                style={{ backgroundColor: '#f44336', padding: '6px 12px', fontSize: '13px' }}
+                                                                onClick={() => handleDelete(dept.id)} // ใช้ handleDelete
+                                                            >
+                                                                ลบ
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr><td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>ไม่พบข้อมูลแผนก</td></tr>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -133,7 +180,6 @@ export default function DepartmentsPage() {
             {isModalOpen && (
                 <div style={{ display: 'flex', position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
                     <div style={{ background: 'white', padding: '30px', borderRadius: '12px', width: '100%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-                        {/* เปลี่ยนหัวข้อตามโหมด */}
                         <h3 style={{ marginBottom: '20px', color: '#3e9d8a', textAlign: 'center' }}>
                             {editId ? "แก้ไขข้อมูลแผนก" : "เพิ่มข้อมูลแผนก"}
                         </h3>
@@ -156,18 +202,10 @@ export default function DepartmentsPage() {
                         />
                         
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <button 
-                                className="dept-btn" 
-                                style={{ flex: 1, backgroundColor: '#3e9d8a' }} 
-                                onClick={saveData}
-                            >
+                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#3e9d8a' }} onClick={saveData}>
                                 {editId ? "บันทึกการแก้ไข" : "บันทึก"}
                             </button>
-                            <button 
-                                className="dept-btn" 
-                                style={{ flex: 1, backgroundColor: '#9ca3af' }} 
-                                onClick={closeModal}
-                            >
+                            <button className="dept-btn" style={{ flex: 1, backgroundColor: '#9ca3af' }} onClick={closeModal}>
                                 ยกเลิก
                             </button>
                         </div>
