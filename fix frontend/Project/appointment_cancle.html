@@ -1,57 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>ยกเลิกการนัดหมาย</title>
 </head>
+
 <body>
-    
-    <header class="main-header">
-        <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
-    </header>
-    <div class="container">
-        <aside class="sidebar">
-            <nav>
-                <a href="#" class="nav-item active">ยกเลิกข้อมูลการนัดหมาย</a>
-            </nav>
-         </aside>
-    <main class="content">
-        <div class="card">
-            <center>
-            <h2>ยกเลิกข้อมูลการนัดหมาย</h2>
-            <br>
-            <form onsubmit="goNext(event)">
-                ชื่อ-นามสกุลคนไข้:
-                <input type="text" name="first_name"><br> <br>
 
-                รายชื่อแพทย์:
-                <input type="text" name="name_name"><br> <br>
+<header class="main-header">
+    <h1>ระบบนัดแพทย์โรงพยาบาล</h1>
+</header>
 
-                แผนกแพทย์:
-                <input type="text" name="panak_name"><br> <br>
+<div class="container">
+<main class="content">
+<div class="card">
+<center>
 
-                วัน/เดือน/ปี:
-                <input type="date" name="date"><br> <br>
+<h2>ยกเลิกข้อมูลการนัดหมาย</h2>
+<br>
 
-                เวลา:
-                <input type="time" name="time"><br> <br>
-            
-                <button type="submit"> ตกลง</button>
-                <button type="reset"> ยกเลิก</button>
-             </center>
-            </form>
-        </div>
-    </main>
+<form onsubmit="cancelAppointment(event)">
 
-    </div>
-    <script>
-function goNext(e) {
-    e.preventDefault(); // กันรีเฟรช
+<p>คุณต้องการยกเลิกการนัดหมายนี้ใช่หรือไม่?</p>
 
-    // ไปหน้าใหม่
-    window.location.href = "appointment.html";
+<br>
+
+<button type="submit">ตกลง</button>
+<button type="button" onclick="goBack()">ยกเลิก</button>
+
+</form>
+
+</center>
+</div>
+</main>
+</div>
+
+<script>
+
+function cancelAppointment(e){
+    e.preventDefault();
+
+    const id = new URLSearchParams(window.location.search).get("id");
+
+    fetch("http://localhost:3000/appointments/" + id,{
+        method:"DELETE"
+    })
+    .then(()=>{
+        alert("ยกเลิกสำเร็จ");
+        window.location.href="appointment.html";
+    });
 }
+
+function goBack(){
+    window.location.href="appointment.html";
+}
+
 </script>
+
 </body>
 </html>
