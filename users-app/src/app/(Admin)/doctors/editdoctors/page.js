@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import styles from './style.module.css';
 
@@ -21,7 +22,6 @@ const res = await fetch(`/api/doctors/${id}`, {
         body: JSON.stringify({ 
           doctor_name: doctorName, 
           department_id: departmentId 
-          // เอา phone ออกจากตรงนี้
         }),
       });
 

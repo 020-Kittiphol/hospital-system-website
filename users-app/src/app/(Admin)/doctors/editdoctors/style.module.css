@@ -7,7 +7,7 @@
 }
 
 .header {
-  background-color: #439a86; /* สีเขียวตามรูปตัวอย่าง */
+  background-color: #439a86;
   color: white;
   padding: 15px 30px;
   display: flex;
@@ -22,7 +22,7 @@
 
 .sidebar {
   width: 250px;
-  background-color: #439a86; /* สีเขียว sidebar */
+  background-color: #439a86;
   border-top: 1px solid rgba(255,255,255,0.1);
   padding: 20px 0;
 }
@@ -32,7 +32,7 @@
   color: white;
   cursor: pointer;
   background-color: rgba(255,255,255,0.1);
-  border-left: 4px solid #ff9800; /* เส้นสีส้มหน้าเมนู */
+  border-left: 4px solid #ff9800;
 }
 
 .formArea {
@@ -97,7 +97,7 @@
 
 .btnCancel {
   flex: 1;
-  background-color: #f44336; /* ปุ่มยกเลิกสีแดง */
+  background-color: #f44336;
   color: white;
   border: none;
   padding: 12px;

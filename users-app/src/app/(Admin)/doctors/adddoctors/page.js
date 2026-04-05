@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import styles from './style.module.css';
 import { useRouter } from "next/navigation";
@@ -12,7 +13,6 @@ export default function AddDoctorPage() {
   const handleAdd = async (e) => {
     e.preventDefault();
     
-    // Validation เบื้องต้น
     if (!doctorName.trim()) {
       alert("กรุณากรอกชื่อ-นามสกุลแพทย์");
       return;
@@ -34,11 +34,8 @@ export default function AddDoctorPage() {
 
       if (res.ok) {
         alert("เพิ่มข้อมูลแพทย์สำเร็จ!");
-        // ล้างค่าในฟอร์ม
         setDoctorName("");
         setDepartmentId("");
-        // หรือจะให้กระโดดกลับไปหน้าหลัก
-        // router.push('/doctors'); 
       } else {
         alert("เกิดข้อผิดพลาด: " + (data.error || "ไม่สามารถเพิ่มข้อมูลได้"));
       }

@@ -2,43 +2,54 @@ import { NextResponse } from 'next/server';
 const pool = require('@/app/models/db_pool');
 
 export async function GET() {
-    const [rows] = await pool.query("SELECT * FROM department ORDER BY department_id DESC");
-    return NextResponse.json(rows);
+    try {
+        const [rows] = await pool.query("SELECT * FROM department ORDER BY department_id ASC");
+        return NextResponse.json(rows);
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 }
 
 export async function POST(req) {
     try {
         const body = await req.json();
-        // รับค่าให้ตรงกับที่ Frontend ส่งมา
-        const { department_name, department_date } = body;
+        const { department_name, department_date, department_id_code } = body;
 
         await pool.query(
-            "INSERT INTO department (department_name, department_date) VALUES (?, ?)",
-            [department_name, department_date]
+            "INSERT INTO department (department_name, department_date, department_id_code) VALUES (?, ?, ?)",
+            [department_name, department_date, department_id_code]
         );
-
-        return NextResponse.json({ message: "เพิ่มสำเร็จ" });
+        return NextResponse.json({ message: "Success" });
     } catch (error) {
-        return NextResponse.json({ message: "Error", error: error.message }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
 
-export async function DELETE(req, { params }) {
-    await pool.query(
-        "DELETE FROM department WHERE department_id=?",
-        [params.id]
-    );
+export async function PUT(req) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get('id');
+        const body = await req.json();
+        const { department_name, department_date, department_id_code } = body;
 
-    return NextResponse.json({ message: "ลบสำเร็จ" });
+        await pool.query(
+            "UPDATE department SET department_name=?, department_date=?, department_id_code=? WHERE department_id=?",
+            [department_name, department_date, department_id_code, id]
+        );
+        return NextResponse.json({ message: "Updated" });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 }
 
-export async function PUT(req, { params }) {
-    const body = await req.json();
+export async function DELETE(req) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get('id'); 
 
-    await pool.query(
-        "UPDATE department SET department_name=? WHERE department_id=?",
-        [body.department_name, params.id]
-    );
-
-    return NextResponse.json({ message: "แก้ไขสำเร็จ" });
+        await pool.query("DELETE FROM department WHERE department_id=?", [id]);
+        return NextResponse.json({ message: "Deleted" });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 }

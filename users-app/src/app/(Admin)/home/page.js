@@ -1,4 +1,5 @@
 "use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -43,7 +44,7 @@ export default function HomePage() {
                         <Link href="/charts" className="home-card">
                         สรุปข้อมูล chart
                         </Link>
-                        
+
                     </div>
                 </div>
 

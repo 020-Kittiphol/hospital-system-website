@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 const pool = require('@/app/models/db_pool');
 
-import md5 from 'md5'; // 🌟 1. เปลี่ยนมา import md5
+import md5 from 'md5';
 
 export async function POST(request) {
     try {
